@@ -17,7 +17,6 @@ class Tile {
 	 * @param {Number} rotation The shape rotation
 	 */
 	render(ctx, dimensions, rotation) {
-		console.log(this.pos.y);
 		let canvas_position = new Vec2(
 			this.pos.x * dimensions.x,
 			this.pos.y * dimensions.y
