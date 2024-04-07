@@ -24,7 +24,7 @@ class Tile {
 		ctx.drawImage(
 			this.img,
 			canvas_position.x,
-			canvas_position.y - dimensions.y, // The image position is the position of the top left corner of the image, while here the shape position refers to the bottom left corner of the bottom left tile in the shape
+			canvas_position.y,
 			dimensions.x,
 			dimensions.y
 		);
@@ -42,7 +42,7 @@ class Tile {
 		);
 		ctx.clearRect(
 			canvas_position.x,
-			canvas_position.y - dimensions.y, // The image position is the position of the top left corner of the image, while here the shape position refers to the bottom left corner of the bottom left tile in the shape
+			canvas_position.y,
 			dimensions.x,
 			dimensions.y
 		);
