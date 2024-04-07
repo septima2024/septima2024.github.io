@@ -1,3 +1,6 @@
+const tile_size = new Vec2(10, 10);
+const ms_to_move = 1000;
+
 const img_prefix = './images/';
 const img_sources = [
 	'c++.png',
@@ -56,5 +59,26 @@ function play() {
 		return;
 	}
 	console.log('Play!');
-	console.log(images);
+
+	let l = new Shape(
+		'L',
+		[
+			new Tile(new Vec2(0, -1), images[0]),
+			new Tile(new Vec2(0, 0), images[7]),
+			new Tile(new Vec2(1, 0), images[2]),
+			new Tile(new Vec2(2, 0), images[3])
+		],
+		new Vec2(1, 0),
+		new Vec2(5, 5)
+	);
+
+	let canvas = document.getElementById('board');
+	let ctx = canvas.getContext('2d');
+
+	let loop_id = setInterval(() => {
+		l.undraw(ctx, tile_size);
+		l.rotate_clockwise();
+		l.move_down();
+		l.render(ctx, tile_size);
+	}, ms_to_move);
 }
