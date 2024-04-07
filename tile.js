@@ -2,11 +2,11 @@ class Tile {
 	/**
 	 *
 	 * @param {Vec2} pos The position of the tile within the shape
-	 * @param {Image} img The image for the tile
+	 * @param {Number} img The index of the image
 	 */
-	constructor(pos, img) {
+	constructor(pos, img_id) {
 		this.pos = pos;
-		this.img = img;
+		this.img_id = img_id;
 		this.rotation = 0;
 	}
 
@@ -22,7 +22,7 @@ class Tile {
 			this.pos.y * dimensions.y
 		);
 		ctx.drawImage(
-			this.img,
+			images[this.img_id*4+rotation],
 			canvas_position.x,
 			canvas_position.y,
 			dimensions.x,

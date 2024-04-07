@@ -27,10 +27,10 @@ class Shape {
 				return new Shape(
 					'L',
 					[
-						new Tile(new Vec2(0, -1), images[0]),
-						new Tile(new Vec2(0, 0), images[7]),
-						new Tile(new Vec2(1, 0), images[2]),
-						new Tile(new Vec2(2, 0), images[3])
+						new Tile(new Vec2(0, -1), 0),
+						new Tile(new Vec2(0, 0), 7),
+						new Tile(new Vec2(1, 0), 2),
+						new Tile(new Vec2(2, 0), 3)
 					],
 					new Vec2(1, 0),
 					new Vec2(0, -1)
@@ -40,10 +40,10 @@ class Shape {
 				return new Shape(
 					'O',
 					[
-						new Tile(new Vec2(0, -1), images[0]),
-						new Tile(new Vec2(0, 0), images[7]),
-						new Tile(new Vec2(1, 0), images[2]),
-						new Tile(new Vec2(1, -1), images[3])
+						new Tile(new Vec2(0, -1), 0),
+						new Tile(new Vec2(0, 0), 7),
+						new Tile(new Vec2(1, 0), 2),
+						new Tile(new Vec2(1, -1), 3)
 					],
 					new Vec2(0.5, -0.5),
 					new Vec2(0, -1)
@@ -60,7 +60,7 @@ class Shape {
 	}
 
 	rotate_clockwise() {
-		this.rotation = (this.rotation + 90) % 360;
+		this.rotation = (this.rotation + 3) % 4;
 		this.tiles.forEach((tile) => {
 			tile.pos.rotate_clockwise(this.rotation_centre);
 			tile.rotation = this.rotation;
@@ -68,7 +68,7 @@ class Shape {
 	}
 
 	rotate_counterclockwise() {
-		this.rotation = (this.rotation - 90) % 360;
+		this.rotation = (this.rotation + 1) % 4;
 		this.tiles.forEach((tile) => {
 			tile.pos.rotate_counterclockwise(this.rotation_centre);
 			tile.rotation = this.rotation;
@@ -192,6 +192,33 @@ class Shape {
 					canvas_tiles[tile.pos.y + 1][tile.pos.x] !== null) // There is a tile below the current tile -> can not move there
 			);
 		});
+	}
+
+	/**
+	 * @returns {Bool} if any tile of the shape is out of bounds or overlaps with a tile in canvas_tiles, returns false
+	 * @param {Vec2} canvas_size The dimensions of the canvas
+	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
+	 */
+	is_valid_position(canvas_size, canvas_tiles) {
+		return this.tiles.every((tile) => {
+			return (
+				tile.pos.x >= 0 && tile.pos.x < canvas_size.x &&
+				tile.pos.y >= 0 && tile.pos.y < canvas_size.y &&
+					canvas_tiles[tile.pos.y][tile.pos.x] === null
+			);
+		});
+	}
+	can_rotate_clockwise(canvas_size, canvas_tiles) {
+		this.rotate_clockwise();
+		let res = this.is_valid_position(canvas_size, canvas_tiles);
+		this.rotate_counterclockwise();
+		return res;
+	}
+	can_rotate_counterclockwise(canvas_size, canvas_tiles) {
+		this.rotate_counterclockwise();
+		let res = this.is_valid_position(canvas_size, canvas_tiles);
+		this.rotate_clockwise();
+		return res;
 	}
 
 	/**

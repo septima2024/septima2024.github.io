@@ -1,7 +1,9 @@
 const EVENTS = Object.freeze({
 	MOVE_DOWN: 'MOVE_DOWN',
 	MOVE_RIGHT: 'MOVE_RIGHT',
-	MOVE_LEFT: 'MOVE_LEFT'
+	MOVE_LEFT: 'MOVE_LEFT',
+	ROTATE_CW: 'ROTATE_CW',
+	ROTATE_CCW: 'ROTATE_CCW',
 });
 const tile_size = new Vec2(30, 30);
 const canvas_size = new Vec2(10, 15);
@@ -9,33 +11,35 @@ const ms_to_move = 1000;
 
 const img_prefix = './images/';
 const img_sources = [
-	'c++.png',
-	'FACEBOOK.png',
-	'fb.png',
-	'ferris.png',
-	'ico.png',
-	'ig.png',
-	'INSTAGRAM.png',
-	'logo.png',
-	'MAIL.png',
-	'mail0.png',
-	'most_icon.png'
+	'c++',
+	'FACEBOOK',
+	'fb',
+	'ferris',
+	'ico',
+	'ig',
+	'INSTAGRAM',
+	'logo',
+	'MAIL',
+	'mail0',
+	'most_icon'
 ];
 
 const images = [];
-images.length = img_sources.length;
+images.length = img_sources.length * 4;
 
 let image_promises = img_sources.map(function (img_src, index) {
 	return new Promise(function (resolve, reject) {
-		let img = new Image();
-		img.onload = function () {
-			resolve(img);
-		};
-		img.onerror = function () {
-			reject(new Error('Could not load image at ' + img_src));
-		};
-		img.src = img_prefix + img_src;
-		images[index] = img;
+		for (let i = 0; i < 4; i++) {
+			let img = new Image();
+			img.onload = function () {
+				resolve(img);
+			};
+			img.onerror = function () {
+				reject(new Error('Could not load image at ' + img_src));
+			};
+			img.src = img_prefix + img_src + i + ".png";
+			images[index*4+i] = img;
+		}
 	});
 });
 
@@ -88,12 +92,16 @@ function play() {
 	let loop_id = setInterval(() => {
 		// This should be done in an event gathering loop
 		let r = Math.random();
-		if (r < 1 / 3) {
+		if (r < 1 / 5) {
 			events.push(EVENTS.MOVE_DOWN);
-		} else if (r < 2 / 3) {
+		} else if (r < 2 / 5) {
 			events.push(EVENTS.MOVE_RIGHT);
-		} else if (r < 3 / 3) {
+		} else if (r < 3 / 5) {
 			events.push(EVENTS.MOVE_LEFT);
+		} else if (r < 4 / 5) {
+			events.push(EVENTS.ROTATE_CW);
+		} else if (r < 5 / 5) {
+			events.push(EVENTS.ROTATE_CCW);
 		}
 
 		current_shape.undraw(ctx, tile_size);
@@ -123,6 +131,18 @@ function play() {
 				case EVENTS.MOVE_LEFT: {
 					if (current_shape.can_move_left(placed_tiles)) {
 						current_shape.move_left();
+					}
+					break;
+				}
+				case EVENTS.ROTATE_CW: {
+					if (current_shape.can_rotate_clockwise(canvas_size, placed_tiles)) {
+						current_shape.rotate_clockwise();
+					}
+					break;
+				}
+				case EVENTS.ROTATE_CCW: {
+					if (current_shape.can_rotate_counterclockwise(canvas_size, placed_tiles)) {
+						current_shape.rotate_counterclockwise();
 					}
 					break;
 				}
