@@ -87,6 +87,40 @@ function play() {
 	);
 	console.log(placed_tiles);
 
+	window.addEventListener("keydown", function (event) {
+		if (event.defaultPrevented) {
+			return;
+		}
+		let actions = {
+			"ArrowDown":() => {
+				if (current_shape.can_move_down(canvas_size, placed_tiles)) {
+					current_shape.move_down();
+				}
+			},
+			"ArrowUp":() => {
+				if (current_shape.can_rotate_clockwise(canvas_size, placed_tiles)) {
+					current_shape.rotate_clockwise();
+				}
+			},
+			"ArrowLeft":() => {
+				if (current_shape.can_move_left(placed_tiles)) {
+					current_shape.move_left();
+				}
+			},
+			"ArrowRight":() => {
+				if (current_shape.can_move_right(canvas_size, placed_tiles)) {
+					current_shape.move_right();
+				}
+			},
+		};
+		if (event.key in actions && current_shape != null) {
+			current_shape.undraw(ctx, tile_size);
+			actions[event.key]();
+			current_shape.render(ctx, tile_size);
+			event.preventDefault();
+		}
+	}, true);
+
 	let events = [];
 
 	let loop_id = setInterval(() => {

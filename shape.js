@@ -228,8 +228,8 @@ class Shape {
 	can_move_left(canvas_tiles) {
 		return !this.tiles.some((tile) => {
 			return (
-				tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the left
-				(tile.pos.x <= 0 || // There is a wall to the left of the current tile -> can not move there
+				tile.pos.x <= 0 || // There is a wall to the left of the current tile -> can not move there
+				(tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the left
 					canvas_tiles[tile.pos.y][tile.pos.x - 1] !== null) // There is a tile to the left of the current tile -> can not move there
 			);
 		});
@@ -243,8 +243,8 @@ class Shape {
 	can_move_right(canvas_size, canvas_tiles) {
 		return !this.tiles.some((tile) => {
 			return (
-				tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the right
-				(tile.pos.x >= canvas_size.x - 1 || // There is a wall to the right of the current tile -> can not move there
+				tile.pos.x >= canvas_size.x - 1 || // There is a wall to the right of the current tile -> can not move there
+				(tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the right
 					canvas_tiles[tile.pos.y][tile.pos.x + 1] !== null) // There is a tile to the right of the current tile -> can not move there
 			);
 		});
