@@ -1,0 +1,31 @@
+:root {
+	--primary: #1456a7;
+	--secondary: #f9db3d;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: 320px 200px;
+	height: fit-content;
+}
+ 
+.right-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+ 
+.game-board {
+	border: solid 2px;
+	height: 100%;
+	width: 95%;
+}
+ 
+.play-button {
+	background-color: var(--primary);
+	color: var(--secondary);
+	font-weight: bold;
+	font-size: 16px;
+	padding: 15px 30px;
+	cursor: pointer;
+}
