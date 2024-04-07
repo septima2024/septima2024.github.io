@@ -185,7 +185,13 @@ class Shape {
 	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
 	 */
 	can_move_down(canvas_size, canvas_tiles) {
-		return this.bottom_y() < canvas_size.y - 1;
+		return !this.tiles.some((tile) => {
+			return (
+				tile.pos.y >= -1 && // The tile is no more than one block above the screen
+				(tile.pos.y >= canvas_size.y - 1 || // There is a wall below the current tile -> can not move there
+					canvas_tiles[tile.pos.y + 1][tile.pos.x] !== null) // There is a tile below the current tile -> can not move there
+			);
+		});
 	}
 
 	/**
@@ -193,7 +199,13 @@ class Shape {
 	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
 	 */
 	can_move_left(canvas_tiles) {
-		return this.left_x() > 0;
+		return !this.tiles.some((tile) => {
+			return (
+				tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the left
+				(tile.pos.x <= 0 || // There is a wall to the left of the current tile -> can not move there
+					canvas_tiles[tile.pos.y][tile.pos.x - 1] !== null) // There is a tile to the left of the current tile -> can not move there
+			);
+		});
 	}
 
 	/**
@@ -202,6 +214,12 @@ class Shape {
 	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
 	 */
 	can_move_right(canvas_size, canvas_tiles) {
-		return this.right_x() < canvas_size.x - 1;
+		return !this.tiles.some((tile) => {
+			return (
+				tile.pos.y >= 0 && // The tile is on the screen, so it could collide with other blocks to the right
+				(tile.pos.x >= canvas_size.x - 1 || // There is a wall to the right of the current tile -> can not move there
+					canvas_tiles[tile.pos.y][tile.pos.x + 1] !== null) // There is a tile to the right of the current tile -> can not move there
+			);
+		});
 	}
 }
