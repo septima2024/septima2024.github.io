@@ -17,8 +17,6 @@
  
 .game-board {
 	border: solid 2px;
-	height: 100%;
-	width: 95%;
 }
  
 .play-button {
