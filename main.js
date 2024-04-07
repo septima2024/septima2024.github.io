@@ -125,7 +125,7 @@ function play() {
 
 	let loop_id = setInterval(() => {
 		// This should be done in an event gathering loop
-		let r = Math.random();
+		/*let r = Math.random();
 		if (r < 1 / 5) {
 			events.push(EVENTS.MOVE_DOWN);
 		} else if (r < 2 / 5) {
@@ -136,7 +136,7 @@ function play() {
 			events.push(EVENTS.ROTATE_CW);
 		} else if (r < 5 / 5) {
 			events.push(EVENTS.ROTATE_CCW);
-		}
+		}*/
 
 		current_shape.undraw(ctx, tile_size);
 		let can_move_down_start = current_shape.can_move_down(
@@ -202,6 +202,30 @@ function play() {
 			for (let i = 0; i < tiles.length; i += 1) {
 				let tile_pos = tiles[i].pos;
 				placed_tiles[tile_pos.y][tile_pos.x] = tiles[i];
+				placed_tiles[tile_pos.y][tile_pos.x].rotation = current_shape.rotation;
+			}
+			let clears = 0;
+			for (let y = canvas_size.y - 1; y >= 0; y--) {
+				while (y >= 0 && !placed_tiles[y].some((t) => t === null)) {
+					clears++;
+					y--;
+				}
+				if (clears > 0) {
+					let ty = y + clears;
+					for (let x = 0; x < canvas_size.x; x++) {
+						if (placed_tiles[ty][x] !== null) {
+							placed_tiles[ty][x].undraw(ctx, tile_size);
+							placed_tiles[ty][x] = null;
+						}
+						placed_tiles[ty][x] = placed_tiles[y][x];
+						if (placed_tiles[y][x] !== null) {
+							placed_tiles[y][x].undraw(ctx, tile_size);
+							placed_tiles[y][x] = null;
+							placed_tiles[ty][x].pos = new Vec2(x, ty);
+							placed_tiles[ty][x].render(ctx, tile_size);
+						}
+					}
+				}
 			}
 		}
 		current_shape = Shape.generate_random_shape();

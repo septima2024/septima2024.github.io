@@ -21,6 +21,9 @@ class Tile {
 			this.pos.x * dimensions.x,
 			this.pos.y * dimensions.y
 		);
+		if (rotation === undefined) {
+			rotation = this.rotation;
+		}
 		ctx.drawImage(
 			images[this.img_id*4+rotation],
 			canvas_position.x,
