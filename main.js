@@ -214,6 +214,12 @@ function play() {
 		if (!can_move_down_end && !can_move_down_start) {
 			// Only freeze the tile if it can't be moved now AND it couldn't have been moved at the end of the previous iteration (= at the beginning of this iteration)
 			current_shape.render(ctx, tile_size);
+			if (current_shape.top_y() < 0) {
+				console.log('Game over!');
+				current_shape = null;
+				clearInterval(loop_id);
+				return;
+			}
 			freeze();
 		}
 		current_shape.render(ctx, tile_size);

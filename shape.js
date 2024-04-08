@@ -179,6 +179,16 @@ class Shape {
 		return max_y;
 	}
 
+	top_y() {
+		let min_y = Math.pow(2, 30);
+		this.tiles.forEach((tile) => {
+			if (tile.pos.y < min_y) {
+				min_y = tile.pos.y;
+			}
+		});
+		return min_y;
+	}
+
 	/**
 	 *
 	 * @param {Vec2} canvas_size The dimensions of the canvas
@@ -202,9 +212,11 @@ class Shape {
 	is_valid_position(canvas_size, canvas_tiles) {
 		return this.tiles.every((tile) => {
 			return (
-				tile.pos.x >= 0 && tile.pos.x < canvas_size.x &&
-				tile.pos.y >= 0 && tile.pos.y < canvas_size.y &&
-					canvas_tiles[tile.pos.y][tile.pos.x] === null
+				tile.pos.x >= 0 &&
+				tile.pos.x < canvas_size.x &&
+				tile.pos.y >= 0 &&
+				tile.pos.y < canvas_size.y &&
+				canvas_tiles[tile.pos.y][tile.pos.x] === null
 			);
 		});
 	}
