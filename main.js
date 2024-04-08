@@ -74,6 +74,8 @@ function play() {
 	}
 	console.log('Play!');
 
+	let score = 0;
+	let lines = 0;
 	let current_shape = null;
 	freeze();
 
@@ -257,6 +259,10 @@ function play() {
 					}
 				}
 			}
+			lines += clears;
+			score += (canvas_size.x * clears * (clears + 1)) / 2; // Kind of a "combo" styled score adding
+			document.getElementById('score').innerText = score.toString();
+			document.getElementById('lines').innerText = lines.toString();
 		}
 		current_shape = Shape.generate_random_shape();
 		// This should make sure that shapes that can have their centre tile in the middle of the canvas will be placed that way, while those that would have to be at half coordinates will be placed randomly to the left or to the right of the middle
