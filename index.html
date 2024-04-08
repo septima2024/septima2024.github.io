@@ -9,58 +9,29 @@
 		<script src="shape.js"></script>
 		<script src="main.js"></script>
 	</head>
-
 	<body>
-		<div class="grid">
-			<div>
-				<canvas id="board" class="game-board"></canvas>
-				<button
-					class="control-button"
-					id="rotate-ccw-button"
-					onclick="move_shape('rotate_counterclockwise')"
-				>
-					↪
-				</button>
-				<button
-					class="control-button"
-					id="move-left-button"
-					onclick="move_shape('move_left')"
-				>
-					⬅
-				</button>
-				<button
-					class="control-button"
-					id="move-down-button"
-					onclick="move_shape('move_down')"
-				>
-					⬇
-				</button>
-				<button
-					class="control-button"
-					id="move-right-button"
-					onclick="move_shape('move_right')"
-				>
-					➡
-				</button>
-				<button
-					class="control-button"
-					id="rotate-cw-button"
-					onclick="move_shape('rotate_clockwise')"
-				>
-					↩
-				</button>
-			</div>
-			<div class="right-column">
-				<div>
-					<h1>TETRIS</h1>
-					<p>Skóre: <span id="score">0</span></p>
-					<p>Řádky: <span id="lines">0</span></p>
-					<canvas id="next" class="next"></canvas>
+		<header><h1>MÅJÅLES SËPTIMÅ - TETRIS</h1></header>
+		<main>
+			<section>
+				<div id="menu" class="menu">
+					<button class="play-button" id="play-button" disabled> Načítání </button>
 				</div>
-				<button class="play-button" id="play-button" disabled>
-					Načítání
-				</button>
-			</div>
-		</div>
+			</section>
+			<section class="game"> <!-- TODO: na mobil nebo pokud se ma hra dynamicky pridavat (+ vice her najednou), tak to asi bude lepsi davat pred menu -->
+				<canvas id="board" class="game-board"></canvas>
+				<div class="info">
+					<canvas id="next" class="next"></canvas>
+					<p class="infotext">Skóre: <span id="score">0</span></p>
+					<p class="infotext">Řádky: <span id="lines">0</span></p>
+					<div class="controls">
+						<button class="control-button" id="move-left-button" onclick="move_shape('move_left')">⬅</button>
+						<button class="control-button" id="move-down-button" onclick="move_shape('move_down')">⬇</button>
+						<button class="control-button" id="move-right-button" onclick="move_shape('move_right')">➡</button>
+						<button class="control-button" id="rotate-ccw-button" onclick="move_shape('rotate_counterclockwise')">↪</button>
+						<span style="display:hidden;"></span>
+						<button class="control-button" id="rotate-cw-button" onclick="move_shape('rotate_clockwise')">↩</div>
+					</div>
+			</section>
+		</main>
 	</body>
 </html>

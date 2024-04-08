@@ -76,6 +76,10 @@ window.onload = async function () {
 	let canvas = document.getElementById('board');
 	canvas.setAttribute('width', canvas_size.x * tile_size.x);
 	canvas.setAttribute('height', canvas_size.y * tile_size.y);
+	document.getElementById('menu').setAttribute('style',
+		"width:"+(Math.floor(canvas_size.x*tile_size.x*1.5))+"px;"+
+		"height:"+(canvas_size.y*tile_size.y)+"px"
+	);
 	let images_loaded = false;
 	// Wait to load all images
 	try {
