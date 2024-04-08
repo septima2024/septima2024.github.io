@@ -7,7 +7,7 @@ const EVENTS = Object.freeze({
 });
 const tile_size = new Vec2(30, 30);
 const canvas_size = new Vec2(10, 15);
-const ms_to_move = 1000;
+var ms_to_move = 1000;
 
 const img_prefix = './images/';
 const img_sources = [
@@ -137,94 +137,27 @@ function play() {
 
 	let events = [];
 
-	let loop_id = setInterval(() => {
-		// This should be done in an event gathering loop
-		/*let r = Math.random();
-		if (r < 1 / 5) {
-			events.push(EVENTS.MOVE_DOWN);
-		} else if (r < 2 / 5) {
-			events.push(EVENTS.MOVE_RIGHT);
-		} else if (r < 3 / 5) {
-			events.push(EVENTS.MOVE_LEFT);
-		} else if (r < 4 / 5) {
-			events.push(EVENTS.ROTATE_CW);
-		} else if (r < 5 / 5) {
-			events.push(EVENTS.ROTATE_CCW);
-		}*/
-
+	function tick() {
 		current_shape.undraw(ctx, tile_size);
-		let can_move_down_start = current_shape.can_move_down(
-			canvas_size,
-			placed_tiles
-		);
-
-		for (const event of events) {
-			switch (event) {
-				case EVENTS.MOVE_DOWN: {
-					if (
-						current_shape.can_move_down(canvas_size, placed_tiles)
-					) {
-						current_shape.move_down();
-					}
-					break;
-				}
-				case EVENTS.MOVE_RIGHT: {
-					if (
-						current_shape.can_move_right(canvas_size, placed_tiles)
-					) {
-						current_shape.move_right();
-					}
-					break;
-				}
-				case EVENTS.MOVE_LEFT: {
-					if (current_shape.can_move_left(placed_tiles)) {
-						current_shape.move_left();
-					}
-					break;
-				}
-				case EVENTS.ROTATE_CW: {
-					if (
-						current_shape.can_rotate_clockwise(
-							canvas_size,
-							placed_tiles
-						)
-					) {
-						current_shape.rotate_clockwise();
-					}
-					break;
-				}
-				case EVENTS.ROTATE_CCW: {
-					if (
-						current_shape.can_rotate_counterclockwise(
-							canvas_size,
-							placed_tiles
-						)
-					) {
-						current_shape.rotate_counterclockwise();
-					}
-					break;
-				}
-			}
+		let can_move_down_start = current_shape.can_move_down(canvas_size, placed_tiles);
+		if (can_move_down_start) {
+			current_shape.move_down();
 		}
-		events = [EVENTS.MOVE_DOWN]; // The shape should always move down
-
-		let can_move_down_end = current_shape.can_move_down(
-			canvas_size,
-			placed_tiles
-		);
+		let can_move_down_end = current_shape.can_move_down(canvas_size, placed_tiles);
 		if (!can_move_down_end && !can_move_down_start) {
 			// Only freeze the tile if it can't be moved now AND it couldn't have been moved at the end of the previous iteration (= at the beginning of this iteration)
 			current_shape.render(ctx, tile_size);
 			if (current_shape.top_y() < 0) {
 				console.log('Game over!');
 				current_shape = null;
-				clearInterval(loop_id);
 				return;
 			}
 			freeze();
 		}
 		current_shape.render(ctx, tile_size);
-	}, ms_to_move);
+		setTimeout(tick, ms_to_move);
+	}
+	setTimeout(tick, ms_to_move);
 
 	function freeze() {
 		if (current_shape !== null) {
@@ -260,6 +193,8 @@ function play() {
 			}
 			lines += clears;
 			score += (canvas_size.x * clears * (clears + 1)) / 2; // Kind of a "combo" styled score adding
+			ms_to_move -= clears * 5;
+			if (ms_to_move < 100) { ms_to_move = 100; }
 			document.getElementById('score').innerText = score.toString();
 			document.getElementById('lines').innerText = lines.toString();
 		}
