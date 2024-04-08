@@ -76,10 +76,17 @@ window.onload = async function () {
 	let canvas = document.getElementById('board');
 	canvas.setAttribute('width', canvas_size.x * tile_size.x);
 	canvas.setAttribute('height', canvas_size.y * tile_size.y);
-	document.getElementById('menu').setAttribute('style',
-		"width:"+(Math.floor(canvas_size.x*tile_size.x*1.5))+"px;"+
-		"height:"+(canvas_size.y*tile_size.y)+"px"
-	);
+	document
+		.getElementById('menu')
+		.setAttribute(
+			'style',
+			'width:' +
+				Math.floor(canvas_size.x * tile_size.x * 1.5) +
+				'px;' +
+				'height:' +
+				canvas_size.y * tile_size.y +
+				'px'
+		);
 	let images_loaded = false;
 	// Wait to load all images
 	try {
@@ -139,15 +146,19 @@ function play() {
 		true
 	);
 
-	let events = [];
-
 	function tick() {
 		current_shape.undraw(ctx, tile_size);
-		let can_move_down_start = current_shape.can_move_down(canvas_size, placed_tiles);
+		let can_move_down_start = current_shape.can_move_down(
+			canvas_size,
+			placed_tiles
+		);
 		if (can_move_down_start) {
 			current_shape.move_down();
 		}
-		let can_move_down_end = current_shape.can_move_down(canvas_size, placed_tiles);
+		let can_move_down_end = current_shape.can_move_down(
+			canvas_size,
+			placed_tiles
+		);
 		if (!can_move_down_end && !can_move_down_start) {
 			// Only freeze the tile if it can't be moved now AND it couldn't have been moved at the end of the previous iteration (= at the beginning of this iteration)
 			current_shape.render(ctx, tile_size);
@@ -198,7 +209,9 @@ function play() {
 			lines += clears;
 			score += (canvas_size.x * clears * (clears + 1)) / 2; // Kind of a "combo" styled score adding
 			ms_to_move -= clears * 5;
-			if (ms_to_move < 100) { ms_to_move = 100; }
+			if (ms_to_move < 100) {
+				ms_to_move = 100;
+			}
 			document.getElementById('score').innerText = score.toString();
 			document.getElementById('lines').innerText = lines.toString();
 		}
