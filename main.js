@@ -43,7 +43,34 @@ let image_promises = img_sources.map(function (img_src, index) {
 	});
 });
 
+const actions = {
+	move_down: () => {
+		move_down(current_shape, placed_tiles);
+	},
+	rotate_clockwise: () => {
+		rotate_clockwise(current_shape, placed_tiles);
+	},
+	rotate_counterclockwise: () => {
+		rotate_counterclockwise(current_shape, placed_tiles);
+	},
+	move_left: () => {
+		move_left(current_shape, placed_tiles);
+	},
+	move_right: () => {
+		move_right(current_shape, placed_tiles);
+	}
+};
+
 let loaded = false;
+
+let score = 0;
+let lines = 0;
+let current_shape = null;
+let placed_tiles = Array.from({ length: canvas_size.y }, () =>
+	Array.from({ length: canvas_size.x }, () => null)
+);
+let canvas = null;
+let ctx = null;
 
 window.onload = async function () {
 	let canvas = document.getElementById('board');
@@ -74,20 +101,19 @@ function play() {
 	}
 	console.log('Play!');
 
-	let score = 0;
-	let lines = 0;
-	let current_shape = null;
+	score = 0;
+	lines = 0;
+	current_shape = null;
 	freeze();
 
-	let canvas = document.getElementById('board');
+	canvas = document.getElementById('board');
 	canvas.setAttribute('width', canvas_size.x * tile_size.x);
 	canvas.setAttribute('height', canvas_size.y * tile_size.y);
-	let ctx = canvas.getContext('2d');
+	ctx = canvas.getContext('2d');
 
-	let placed_tiles = Array.from({ length: canvas_size.y }, () =>
+	placed_tiles = Array.from({ length: canvas_size.y }, () =>
 		Array.from({ length: canvas_size.x }, () => null)
 	);
-	console.log(placed_tiles);
 
 	window.addEventListener(
 		'keydown',
@@ -95,41 +121,14 @@ function play() {
 			if (event.defaultPrevented) {
 				return;
 			}
-			let actions = {
-				ArrowDown: () => {
-					if (
-						current_shape.can_move_down(canvas_size, placed_tiles)
-					) {
-						current_shape.move_down();
-					}
-				},
-				ArrowUp: () => {
-					if (
-						current_shape.can_rotate_clockwise(
-							canvas_size,
-							placed_tiles
-						)
-					) {
-						current_shape.rotate_clockwise();
-					}
-				},
-				ArrowLeft: () => {
-					if (current_shape.can_move_left(placed_tiles)) {
-						current_shape.move_left();
-					}
-				},
-				ArrowRight: () => {
-					if (
-						current_shape.can_move_right(canvas_size, placed_tiles)
-					) {
-						current_shape.move_right();
-					}
-				}
+			let events_to_movement_key = {
+				ArrowDown: 'move_down',
+				ArrowUp: 'rotate_clockwise',
+				ArrowLeft: 'move_left',
+				ArrowRight: 'move_right'
 			};
-			if (event.key in actions && current_shape != null) {
-				current_shape.undraw(ctx, tile_size);
-				actions[event.key]();
-				current_shape.render(ctx, tile_size);
+			if (event.key in events_to_movement_key && current_shape != null) {
+				move_shape(events_to_movement_key[event.key]);
 				event.preventDefault();
 			}
 		},
@@ -272,5 +271,48 @@ function play() {
 		for (let i = 0; i < tiles_to_shift; i += 1) {
 			current_shape.move_right();
 		}
+	}
+}
+
+/**
+ *
+ * @param {String} event_id The event id
+ */
+function move_shape(event_id) {
+	if (current_shape === null || !(event_id in actions) || ctx === null) {
+		return;
+	}
+	current_shape.undraw(ctx, tile_size);
+	actions[event_id]();
+	current_shape.render(ctx, tile_size);
+}
+
+function move_down() {
+	if (current_shape.can_move_down(canvas_size, placed_tiles)) {
+		current_shape.move_down();
+	}
+}
+
+function move_left() {
+	if (current_shape.can_move_left(placed_tiles)) {
+		current_shape.move_left();
+	}
+}
+
+function move_right() {
+	if (current_shape.can_move_right(canvas_size, placed_tiles)) {
+		current_shape.move_right();
+	}
+}
+
+function rotate_clockwise() {
+	if (current_shape.can_rotate_clockwise(canvas_size, placed_tiles)) {
+		current_shape.rotate_clockwise();
+	}
+}
+
+function rotate_counterclockwise() {
+	if (current_shape.can_rotate_counterclockwise(canvas_size, placed_tiles)) {
+		current_shape.rotate_counterclockwise();
 	}
 }

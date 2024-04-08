@@ -12,7 +12,44 @@
 
 	<body>
 		<div class="grid">
-			<canvas id="board" class="game-board"></canvas>
+			<div>
+				<canvas id="board" class="game-board"></canvas>
+				<button
+					class="control-button"
+					id="rotate-ccw-button"
+					onclick="move_shape('rotate_counterclockwise')"
+				>
+					↪
+				</button>
+				<button
+					class="control-button"
+					id="move-left-button"
+					onclick="move_shape('move_left')"
+				>
+					⬅
+				</button>
+				<button
+					class="control-button"
+					id="move-down-button"
+					onclick="move_shape('move_down')"
+				>
+					⬇
+				</button>
+				<button
+					class="control-button"
+					id="move-right-button"
+					onclick="move_shape('move_right')"
+				>
+					➡
+				</button>
+				<button
+					class="control-button"
+					id="rotate-cw-button"
+					onclick="move_shape('rotate_clockwise')"
+				>
+					↩
+				</button>
+			</div>
 			<div class="right-column">
 				<div>
 					<h1>TETRIS</h1>
