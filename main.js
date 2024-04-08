@@ -110,6 +110,8 @@ function play() {
 	if (!loaded) {
 		return;
 	}
+	document.getElementById('menu_sec').setAttribute("style", "display:none");
+	document.getElementById('game_sec').removeAttribute("style");
 	console.log('Play!');
 
 	score = 0;
@@ -165,6 +167,7 @@ function play() {
 			if (current_shape.top_y() < 0) {
 				console.log('Game over!');
 				current_shape = null;
+				document.getElementById('menu_sec').removeAttribute("style");
 				return;
 			}
 			freeze();

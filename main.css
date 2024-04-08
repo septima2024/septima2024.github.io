@@ -101,3 +101,26 @@ button:hover {
 	margin: 10px;
 }
 
+@media only screen and (max-width:1250px) {
+	main {
+		padding: 20px;
+		display: block;
+		height: fit-content;
+	}
+	section {
+		width: 95%;
+		margin: 15px auto;
+	}
+	.menu {
+		width:100% !important;
+	}
+}
+@media only screen and (max-width:720px) {
+	.game {
+		flex-direction: column;
+	}
+	.game-board, .info {
+		margin: 20px auto;
+	}
+}
+
