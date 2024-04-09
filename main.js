@@ -124,6 +124,9 @@ function play() {
 	}
 	document.getElementById('menu_sec').setAttribute('style', 'display:none');
 	document.getElementById('game_sec').removeAttribute('style');
+	let retry_button = document.getElementById('retry-button');
+	retry_button.setAttribute('disabled', "");
+	retry_button.setAttribute('style', "display:none");
 	console.log('Play!');
 
 	let ms_to_move = 1000;
@@ -141,6 +144,7 @@ function play() {
 	canvas = document.getElementById('board');
 	ctx = setup_canvas(canvas, canvas_size.x * tile_size.x, canvas_size.y * tile_size.y, size_multiplier);
 	let canvas_next = document.getElementById('next');
+	canvas_next.style.display = "inline";
 	let ctx_next = setup_canvas(canvas_next, 4 * tile_size.x, 4 * tile_size.y, size_multiplier);
 
 	freeze(); // freeze null piece to select and draw next
@@ -169,7 +173,12 @@ function play() {
 				delete games[game_id];
 				console.log('Game over!');
 				current_shape[0] = null;
-				document.getElementById('menu_sec').removeAttribute('style');
+				//document.getElementById('menu_sec').removeAttribute('style');
+				retry_button.textContent = 'Hråt znovu';
+				retry_button.onclick = play;
+				retry_button.removeAttribute('disabled');
+				retry_button.removeAttribute('style');
+				canvas_next.style.display = "none";
 				return;
 			}
 			freeze();
@@ -231,7 +240,6 @@ function play() {
 }
 
 function try_movement_everywhere(movement) {
-	console.log(games);
 	for (let game of Object.values(games)) {
 		try_movement(game.ctx, game.shape[0], game.placed, movement);
 	}
