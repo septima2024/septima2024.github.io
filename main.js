@@ -43,8 +43,12 @@ window.onload = async function () {
 	let notes_sec = document.getElementById('notes_sec');
 	let menu = document.getElementById('menu');
 	let menu_size_style =
-			'width:' + Math.floor(canvas_size.x * tile_size.x * 1.5) + 'px;' +
-			'height:' + canvas_size.y * tile_size.y + 'px';
+		'width:' +
+		Math.floor(canvas_size.x * tile_size.x * 1.5) +
+		'px;' +
+		'height:' +
+		canvas_size.y * tile_size.y +
+		'px';
 	menu.setAttribute('style', menu_size_style);
 	notes_sec.setAttribute('style', menu_size_style);
 	let images_loaded = false;
@@ -190,16 +194,17 @@ function play(
 		canvas_next_size.y * tile_size.y,
 		size_multiplier
 	);
-	if (first_play) { // update notes_sec size to match game section size
+	if (first_play) {
+		// update notes_sec size to match game section size
 		// TODO:? sizing ignores resizes after
 		let notes_sec = document.getElementById('notes_sec');
 		const computed_style = window.getComputedStyle(game_sec);
 		const pad = parseInt(computed_style.paddingTop, 10);
-		let w = game_sec.clientWidth - 2*pad;
-		let h = game_sec.clientHeight - 2*pad;
-		notes_sec.setAttribute("style",
-			"width:"+w+"px;"+
-			"height:"+h+"px"
+		let w = game_sec.clientWidth - 2 * pad;
+		let h = game_sec.clientHeight - 2 * pad;
+		notes_sec.setAttribute(
+			'style',
+			'width:' + w + 'px;' + 'height:' + h + 'px'
 		);
 	}
 
