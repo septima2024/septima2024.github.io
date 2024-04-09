@@ -66,6 +66,7 @@ let loaded = false;
 let score = 0;
 let lines = 0;
 let current_shape = null;
+let next_shape = null;
 let placed_tiles = Array.from({ length: canvas_size.y }, () =>
 	Array.from({ length: canvas_size.x }, () => null)
 );
@@ -76,6 +77,9 @@ window.onload = async function () {
 	let canvas = document.getElementById('board');
 	canvas.setAttribute('width', canvas_size.x * tile_size.x);
 	canvas.setAttribute('height', canvas_size.y * tile_size.y);
+	let canvas_next = document.getElementById('next');
+	canvas_next.setAttribute('width', 4 * tile_size.x);
+	canvas_next.setAttribute('height', 4 * tile_size.y);
 	document
 		.getElementById('menu')
 		.setAttribute(
@@ -114,20 +118,21 @@ function play() {
 	document.getElementById('game_sec').removeAttribute('style');
 	console.log('Play!');
 
-	score = 0;
-	lines = 0;
-	current_shape = null;
-	freeze();
-
 	const size_multiplier = window.devicePixelRatio;
 	canvas = document.getElementById('board');
 	ctx = canvas.getContext('2d');
+	let canvas_next = document.getElementById('next');
+	let ctx_next = canvas_next.getContext('2d');
 
 	canvas.style.width = (canvas_size.x * tile_size.x).toString() + 'px';
 	canvas.style.height = (canvas_size.y * tile_size.y).toString() + 'px';
+	canvas_next.style.width = (4 * tile_size.x).toString() + 'px';
+	canvas_next.style.height = (4 * tile_size.y).toString() + 'px';
 
 	const computed_style = window.getComputedStyle(canvas);
 	const border_width = parseInt(computed_style.borderTopWidth, 10);
+	const computed_stylen = window.getComputedStyle(canvas_next);
+	const border_widthn = parseInt(computed_stylen.borderTopWidth, 10);
 
 	const rect = canvas.getBoundingClientRect();
 	let width = rect.width - 2 * border_width;
@@ -137,6 +142,18 @@ function play() {
 	canvas.height = height * size_multiplier;
 	// Scale the drawing context accordingly
 	ctx.scale(size_multiplier, size_multiplier);
+	const rectn = canvas_next.getBoundingClientRect();
+	let widthn = rectn.width - 2 * border_widthn;
+	let heightn = rectn.height - 2 * border_widthn;
+	canvas_next.width = widthn * size_multiplier;
+	canvas_next.height = heightn * size_multiplier;
+	ctx_next.scale(size_multiplier, size_multiplier);
+
+	score = 0;
+	lines = 0;
+	current_shape = null;
+	next_shape = Shape.generate_random_shape();
+	freeze();
 
 	placed_tiles = Array.from({ length: canvas_size.y }, () =>
 		Array.from({ length: canvas_size.x }, () => null)
@@ -232,14 +249,13 @@ function play() {
 			document.getElementById('score').innerText = score.toString();
 			document.getElementById('lines').innerText = lines.toString();
 		}
-		current_shape = Shape.generate_random_shape();
-		// This should make sure that shapes that can have their centre tile in the middle of the canvas will be placed that way, while those that would have to be at half coordinates will be placed randomly to the left or to the right of the middle
-		let tiles_to_shift = Math.floor(
-			(canvas_size.x - current_shape.width()) / 2.0 + Math.random()
-		);
-		for (let i = 0; i < tiles_to_shift; i += 1) {
-			current_shape.move_right();
-		}
+		next_shape.undraw(ctx_next, tile_size);
+		current_shape = next_shape;
+		let rots = Math.floor(Math.random() * 3);
+		for (let i = 0; i < rots; i++) { current_shape.rotate_clockwise(); }
+		current_shape.set_pos(new Vec2(Math.floor((canvas_size.x - current_shape.width()) / 2 + Math.random()), -1));
+		next_shape = Shape.generate_random_shape();
+		next_shape.render(ctx_next, tile_size);
 	}
 }
 

@@ -1,4 +1,4 @@
-const SHAPES = Object.freeze({ L: 'L', O: 'O' });
+const SHAPES = Object.freeze({ L: 'L', O: 'O', J: 'J', T: 'T', I: 'I', S: 'S', Z: 'Z' });
 
 class Shape {
 	/**
@@ -27,26 +27,91 @@ class Shape {
 				return new Shape(
 					'L',
 					[
-						new Tile(new Vec2(0, -1), 0),
-						new Tile(new Vec2(0, 0), 7),
-						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(2, 0), 3)
+						new Tile(new Vec2(-1, -1), 0),
+						new Tile(new Vec2(-1, 0), 7),
+						new Tile(new Vec2(0, 0), 2),
+						new Tile(new Vec2(1, 0), 3)
 					],
-					new Vec2(1, 0),
-					new Vec2(0, -1)
+					new Vec2(0, 0),
+					new Vec2(1, 3)
 				);
 			}
 			case 'O': {
 				return new Shape(
 					'O',
 					[
-						new Tile(new Vec2(0, -1), 0),
+						new Tile(new Vec2(0, 1), 0),
 						new Tile(new Vec2(0, 0), 7),
 						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(1, -1), 3)
+						new Tile(new Vec2(1, 1), 3)
 					],
-					new Vec2(0.5, -0.5),
-					new Vec2(0, -1)
+					new Vec2(0.5, 0.5),
+					new Vec2(1, 1)
+				);
+			}
+			case 'J': {
+				return new Shape(
+					'J',
+					[
+						new Tile(new Vec2(-1, 0), 7),
+						new Tile(new Vec2(0, 0), 2),
+						new Tile(new Vec2(1, 0), 3),
+						new Tile(new Vec2(1, -1), 0)
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'T': {
+				return new Shape(
+					'T',
+					[
+						new Tile(new Vec2(0, 0), 0),
+						new Tile(new Vec2(1, 0), 7),
+						new Tile(new Vec2(-1, 0), 2),
+						new Tile(new Vec2(0, 1), 3),
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 2)
+				);
+			}
+			case 'I': {
+				return new Shape(
+					'I',
+					[
+						new Tile(new Vec2(-1, 0), 0),
+						new Tile(new Vec2(0, 0), 7),
+						new Tile(new Vec2(1, 0), 2),
+						new Tile(new Vec2(2, 0), 3),
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'S': {
+				return new Shape(
+					'S',
+					[
+						new Tile(new Vec2(-1, 0), 0),
+						new Tile(new Vec2(0, 0), 7),
+						new Tile(new Vec2(0, -1), 2),
+						new Tile(new Vec2(1, -1), 3),
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 2)
+				);
+			}
+			case 'Z': {
+				return new Shape(
+					'Z',
+					[
+						new Tile(new Vec2(-1, -1), 3),
+						new Tile(new Vec2(0, -1), 2),
+						new Tile(new Vec2(0, 0), 0),
+						new Tile(new Vec2(1, 0), 7),
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 2)
 				);
 			}
 		}
@@ -260,5 +325,17 @@ class Shape {
 					canvas_tiles[tile.pos.y][tile.pos.x + 1] !== null) // There is a tile to the right of the current tile -> can not move there
 			);
 		});
+	}
+
+	// sets pos of bottom-left corner
+	set_pos(new_pos) {
+		let dx = new_pos.x - this.left_x();
+		let dy = new_pos.y - this.bottom_y();
+		for (var tile of this.tiles) {
+			tile.pos.x += dx;
+			tile.pos.y += dy;
+		}
+		this.rotation_centre.x += dx;
+		this.rotation_centre.y += dy;
 	}
 }
