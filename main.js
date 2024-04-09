@@ -109,6 +109,23 @@ window.onload = async function () {
 	loaded = images_loaded; // TODO: Make this work properly
 };
 
+function setup_canvas(cv, width, height, scale) {
+	cv.style.width = width.toString() + 'px';
+	cv.style.height = height.toString() + 'px';
+	const computed_style = window.getComputedStyle(cv);
+	const border_width = parseInt(computed_style.borderTopWidth, 10);
+	const rect = cv.getBoundingClientRect();
+	let resized_width = rect.width - 2 * border_width;
+	let resized_height = rect.height - 2 * border_width;
+	// Set the drawing area size of the canvas in physical pixels
+	cv.width = resized_width * scale;
+	cv.height = resized_height * scale;
+	// Scale the drawing context accordingly
+	let context = cv.getContext('2d');
+	context.scale(scale, scale);
+	return context;
+}
+
 function play() {
 	// TODO: Make this work properly
 	if (!loaded) {
@@ -120,34 +137,9 @@ function play() {
 
 	const size_multiplier = window.devicePixelRatio;
 	canvas = document.getElementById('board');
-	ctx = canvas.getContext('2d');
+	ctx = setup_canvas(canvas, canvas_size.x * tile_size.x, canvas_size.y * tile_size.y, size_multiplier);
 	let canvas_next = document.getElementById('next');
-	let ctx_next = canvas_next.getContext('2d');
-
-	canvas.style.width = (canvas_size.x * tile_size.x).toString() + 'px';
-	canvas.style.height = (canvas_size.y * tile_size.y).toString() + 'px';
-	canvas_next.style.width = (4 * tile_size.x).toString() + 'px';
-	canvas_next.style.height = (4 * tile_size.y).toString() + 'px';
-
-	const computed_style = window.getComputedStyle(canvas);
-	const border_width = parseInt(computed_style.borderTopWidth, 10);
-	const computed_stylen = window.getComputedStyle(canvas_next);
-	const border_widthn = parseInt(computed_stylen.borderTopWidth, 10);
-
-	const rect = canvas.getBoundingClientRect();
-	let width = rect.width - 2 * border_width;
-	let height = rect.height - 2 * border_width;
-	// Set the drawing area size of the canvas in physical pixels
-	canvas.width = width * size_multiplier;
-	canvas.height = height * size_multiplier;
-	// Scale the drawing context accordingly
-	ctx.scale(size_multiplier, size_multiplier);
-	const rectn = canvas_next.getBoundingClientRect();
-	let widthn = rectn.width - 2 * border_widthn;
-	let heightn = rectn.height - 2 * border_widthn;
-	canvas_next.width = widthn * size_multiplier;
-	canvas_next.height = heightn * size_multiplier;
-	ctx_next.scale(size_multiplier, size_multiplier);
+	let ctx_next = setup_canvas(canvas_next, 4 * tile_size.x, 4 * tile_size.y, size_multiplier);
 
 	score = 0;
 	lines = 0;
