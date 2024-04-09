@@ -137,6 +137,7 @@ function play_new(original) {
 	play_in(gs);
 }
 
+var touches = 0;
 function play(
 	game_sec,
 	retry_button,
@@ -156,6 +157,24 @@ function play(
 		window.addEventListener('click', function (e) {
 			if (e.detail === 3) {
 				let tclicked = document.elementFromPoint(e.clientX, e.clientY);
+				if (tclicked.tagName.toLowerCase() === 'h1') {
+					console.log('c:');
+					play_new(game_sec);
+				}
+			}
+		});
+		window.addEventListener('touchstart', function (e) {
+			if (e.touches.length < 1) {
+				return;
+			}
+			if (touches === 0) {
+				setInterval(() => {
+					touches = 0;
+				}, 1000);
+			}
+			touches++;
+			if (touches == 3) {
+				let tclicked = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				if (tclicked.tagName.toLowerCase() === 'h1') {
 					console.log('c:');
 					play_new(game_sec);
