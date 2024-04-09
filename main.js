@@ -110,8 +110,8 @@ function play() {
 	if (!loaded) {
 		return;
 	}
-	document.getElementById('menu_sec').setAttribute("style", "display:none");
-	document.getElementById('game_sec').removeAttribute("style");
+	document.getElementById('menu_sec').setAttribute('style', 'display:none');
+	document.getElementById('game_sec').removeAttribute('style');
 	console.log('Play!');
 
 	score = 0;
@@ -119,10 +119,24 @@ function play() {
 	current_shape = null;
 	freeze();
 
+	const size_multiplier = window.devicePixelRatio;
 	canvas = document.getElementById('board');
-	canvas.setAttribute('width', canvas_size.x * tile_size.x);
-	canvas.setAttribute('height', canvas_size.y * tile_size.y);
 	ctx = canvas.getContext('2d');
+
+	canvas.style.width = (canvas_size.x * tile_size.x).toString() + 'px';
+	canvas.style.height = (canvas_size.y * tile_size.y).toString() + 'px';
+
+	const computed_style = window.getComputedStyle(canvas);
+	const border_width = parseInt(computed_style.borderTopWidth, 10);
+
+	const rect = canvas.getBoundingClientRect();
+	let width = rect.width - 2 * border_width;
+	let height = rect.height - 2 * border_width;
+	// Set the drawing area size of the canvas in physical pixels
+	canvas.width = width * size_multiplier;
+	canvas.height = height * size_multiplier;
+	// Scale the drawing context accordingly
+	ctx.scale(size_multiplier, size_multiplier);
 
 	placed_tiles = Array.from({ length: canvas_size.y }, () =>
 		Array.from({ length: canvas_size.x }, () => null)
@@ -167,7 +181,7 @@ function play() {
 			if (current_shape.top_y() < 0) {
 				console.log('Game over!');
 				current_shape = null;
-				document.getElementById('menu_sec').removeAttribute("style");
+				document.getElementById('menu_sec').removeAttribute('style');
 				return;
 			}
 			freeze();
