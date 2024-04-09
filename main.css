@@ -5,8 +5,9 @@
 	--primary1: #0f417f;
 	--primary2: #0a2e59;
 	--primary3: #041326;
-	--secondary-1: #f9e57c;
 	--secondary: #f9db3d;
+	--secondary-1: #f9e57c;
+	--secondary-2: #dcbb1a;
 }
 
 * {
@@ -36,6 +37,9 @@ h1 {
 	color: var(--secondary);
 	font-size: 30px;
 }
+h3 {
+	color: var(--secondary);
+}
 
 main {
 	padding: 20px;
@@ -53,6 +57,9 @@ section {
 	margin: 15px;
 	box-shadow: 0px 0px 50px var(--primary3);
 	background-color: var(--primary1);
+}
+.credits-and-instructions-wrap {
+	display: block;
 }
 .info {
 	display: flex;
@@ -116,6 +123,13 @@ button:hover {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.credits-and-instructions {
+	color: var(--secondary);
+}
+.credits-and-instructions a {
+	color: var(--secondary-2);
 }
 
 @media only screen and (max-width:1250px) {
