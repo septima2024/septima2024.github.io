@@ -205,7 +205,6 @@ function play(game_sec, retry_button, score_text, lines_text, canvas, canvas_nex
 				delete games[game_id];
 				console.log('Game over!');
 				current_shape[0] = null;
-				retry_button.textContent = 'Hråt znovu';
 				retry_button.onclick = (() => { play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next); });
 				retry_button.removeAttribute('disabled');
 				retry_button.removeAttribute('style');
