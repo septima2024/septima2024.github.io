@@ -39,12 +39,8 @@ let image_promises = img_sources.map(function (img_src, index) {
 let loaded = false;
 
 window.onload = async function () {
-	let canvas = document.getElementById('board');
-	canvas.setAttribute('width', canvas_size.x * tile_size.x);
-	canvas.setAttribute('height', canvas_size.y * tile_size.y);
-	let canvas_next = document.getElementById('next');
-	canvas_next.setAttribute('width', 4 * tile_size.x);
-	canvas_next.setAttribute('height', 4 * tile_size.y);
+	let play_button = document.getElementById('play-button');
+
 	document
 		.getElementById('menu')
 		.setAttribute(
@@ -67,9 +63,8 @@ window.onload = async function () {
 		console.error(error);
 	}
 
-	let play_button = document.getElementById('play-button');
 	play_button.textContent = 'Hråt';
-	play_button.onclick = play;
+	play_button.onclick = (() => { play_in(document.getElementsByClassName("game")[0]); });
 	play_button.removeAttribute('disabled');
 	loaded = images_loaded; // TODO: Make this work properly
 };
@@ -118,18 +113,43 @@ window.addEventListener(
 	},
 	true
 );
-function play() {
+
+function play_in(game_sec) {
+	let retry_button = game_sec.querySelector('.retry-button');
+	let score_text = game_sec.querySelector('.score');
+	let lines_text = game_sec.querySelector('.lines');
+	let canvas = game_sec.querySelector('.game-board');
+	let canvas_next = game_sec.querySelector('.next');
+	play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next);
+}
+
+function play_new(original) {
+	let gs = original.cloneNode(true);
+	document.getElementById("main").insertBefore(gs, document.getElementById("menu_sec"));
+	play_in(gs);
+}
+
+function play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next) {
 	// TODO: Make this work properly
 	if (!loaded) {
 		return;
 	}
-	document.getElementById('menu_sec').setAttribute('style', 'display:none');
-	document.getElementById('game_sec').removeAttribute('style');
-	let retry_button = document.getElementById('retry-button');
+	let menu_sec = document.getElementById('menu_sec');
+	if (!menu_sec.hasAttribute("style")) {
+		menu_sec.setAttribute('style', 'display:none');
+		window.addEventListener('click', function (e) {
+			if (e.detail === 3) {
+				let tclicked = document.elementFromPoint(e.clientX, e.clientY);
+				if (tclicked.tagName.toLowerCase() === "h1") {
+					console.log("c:");
+					play_new(game_sec);
+				}
+			}
+		});
+	}
+	game_sec.removeAttribute('style');
 	retry_button.setAttribute('disabled', '');
 	retry_button.setAttribute('style', 'display:none');
-	let score_text = document.getElementById('score');
-	let lines_text = document.getElementById('lines');
 	console.log('Play!');
 
 	let ms_to_move = 1000;
@@ -142,18 +162,15 @@ function play() {
 	let placed_tiles = Array.from({ length: canvas_size.y }, () =>
 		Array.from({ length: canvas_size.x }, () => null)
 	);
-	let canvas = null;
 	let ctx = null;
 
 	const size_multiplier = window.devicePixelRatio;
-	canvas = document.getElementById('board');
 	ctx = setup_canvas(
 		canvas,
 		canvas_size.x * tile_size.x,
 		canvas_size.y * tile_size.y,
 		size_multiplier
 	);
-	let canvas_next = document.getElementById('next');
 	canvas_next.style.display = 'inline';
 	let ctx_next = setup_canvas(
 		canvas_next,
@@ -188,9 +205,8 @@ function play() {
 				delete games[game_id];
 				console.log('Game over!');
 				current_shape[0] = null;
-				//document.getElementById('menu_sec').removeAttribute('style');
 				retry_button.textContent = 'Hråt znovu';
-				retry_button.onclick = play;
+				retry_button.onclick = (() => { play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next); });
 				retry_button.removeAttribute('disabled');
 				retry_button.removeAttribute('style');
 				canvas_next.style.display = 'none';

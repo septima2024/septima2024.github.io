@@ -301,9 +301,8 @@ class Shape {
 			return (
 				tile.pos.x >= 0 &&
 				tile.pos.x < canvas_size.x &&
-				tile.pos.y >= 0 &&
 				tile.pos.y < canvas_size.y &&
-				canvas_tiles[tile.pos.y][tile.pos.x] === null
+				(tile.pos.y < 0 || canvas_tiles[tile.pos.y][tile.pos.x] === null)
 			);
 		});
 	}

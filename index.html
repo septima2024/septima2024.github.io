@@ -24,25 +24,17 @@
 		<header>
 			<h1><b>MÅJÅLES SËPTIMÅ - TETRIS</b></h1>
 		</header>
-		<main>
-			<section id="game_sec" class="game" style="display: none">
-				<canvas id="board" class="game-board"></canvas>
+		<main id="main">
+			<section class="game" style="display: none">
+				<canvas class="game-board"></canvas>
 				<div class="info">
-					<canvas id="next" class="next centered"></canvas>
-					<button
-						id="retry-button"
-						class="retry-button"
-						style="display: none"
-						disabled
-					>
-						Zkusit znovu
-					</button>
-					<p class="infotext">Skóre: <span id="score">0</span></p>
-					<p class="infotext">Řádky: <span id="lines">0</span></p>
+					<canvas class="next"></canvas>
+					<button class="retry-button" style="display:none" disabled>Zkusit znovu</button>
+					<p class="infotext">Skóre: <span class="score">0</span></p>
+					<p class="infotext">Řádky: <span class="lines">0</span></p>
 					<div class="controls">
 						<button
 							class="control-button"
-							id="rotate-cw-button"
 							onclick="try_movement_everywhere('rotate_clockwise')"
 						>
 							<i class="fa-solid fa-rotate-right"></i>
@@ -50,28 +42,24 @@
 						<span style="display: hidden"></span>
 						<button
 							class="control-button"
-							id="rotate-ccw-button"
 							onclick="try_movement_everywhere('rotate_counterclockwise')"
 						>
 							<i class="fa-solid fa-rotate-left"></i>
 						</button>
 						<button
 							class="control-button"
-							id="move-left-button"
 							onclick="try_movement_everywhere('move_left')"
 						>
 							<i class="fa-solid fa-arrow-left"></i>
 						</button>
 						<button
 							class="control-button"
-							id="move-down-button"
 							onclick="try_movement_everywhere('move_down')"
 						>
 							<i class="fa-solid fa-arrow-down"></i>
 						</button>
 						<button
 							class="control-button"
-							id="move-right-button"
 							onclick="try_movement_everywhere('move_right')"
 						>
 							<i class="fa-solid fa-arrow-right"></i>
