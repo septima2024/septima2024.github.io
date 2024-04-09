@@ -1,4 +1,12 @@
-const SHAPES = Object.freeze({ L: 'L', O: 'O', J: 'J', T: 'T', I: 'I', S: 'S', Z: 'Z' });
+const SHAPES = Object.freeze({
+	L: 'L',
+	O: 'O',
+	J: 'J',
+	T: 'T',
+	I: 'I',
+	S: 'S',
+	Z: 'Z'
+});
 
 class Shape {
 	/**
@@ -69,7 +77,7 @@ class Shape {
 						new Tile(new Vec2(0, 0), 0),
 						new Tile(new Vec2(1, 0), 7),
 						new Tile(new Vec2(-1, 0), 2),
-						new Tile(new Vec2(0, 1), 3),
+						new Tile(new Vec2(0, 1), 3)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 2)
@@ -82,7 +90,7 @@ class Shape {
 						new Tile(new Vec2(-1, 0), 0),
 						new Tile(new Vec2(0, 0), 7),
 						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(2, 0), 3),
+						new Tile(new Vec2(2, 0), 3)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -95,7 +103,7 @@ class Shape {
 						new Tile(new Vec2(-1, 0), 0),
 						new Tile(new Vec2(0, 0), 7),
 						new Tile(new Vec2(0, -1), 2),
-						new Tile(new Vec2(1, -1), 3),
+						new Tile(new Vec2(1, -1), 3)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -108,7 +116,7 @@ class Shape {
 						new Tile(new Vec2(-1, -1), 3),
 						new Tile(new Vec2(0, -1), 2),
 						new Tile(new Vec2(0, 0), 0),
-						new Tile(new Vec2(1, 0), 7),
+						new Tile(new Vec2(1, 0), 7)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -198,6 +206,20 @@ class Shape {
 	 */
 	place_down() {
 		return this.tiles;
+	}
+
+	height() {
+		let max_y = -Math.pow(2, 30);
+		let min_y = Math.pow(2, 30);
+		this.tiles.forEach((tile) => {
+			if (tile.pos.y > max_y) {
+				max_y = tile.pos.y;
+			}
+			if (tile.pos.y < min_y) {
+				min_y = tile.pos.y;
+			}
+		});
+		return max_y - min_y + 1;
 	}
 
 	width() {
@@ -339,4 +361,3 @@ class Shape {
 		this.rotation_centre.y += dy;
 	}
 }
-

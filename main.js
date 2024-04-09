@@ -1,5 +1,6 @@
 const tile_size = new Vec2(30, 30);
 const canvas_size = new Vec2(10, 15);
+const canvas_next_size = new Vec2(4, 4);
 
 const img_prefix = './images/';
 const img_sources = [
@@ -125,15 +126,15 @@ function play() {
 	document.getElementById('menu_sec').setAttribute('style', 'display:none');
 	document.getElementById('game_sec').removeAttribute('style');
 	let retry_button = document.getElementById('retry-button');
-	retry_button.setAttribute('disabled', "");
-	retry_button.setAttribute('style', "display:none");
+	retry_button.setAttribute('disabled', '');
+	retry_button.setAttribute('style', 'display:none');
 	console.log('Play!');
 
 	let ms_to_move = 1000;
 	let score = 0;
 	let lines = 0;
 	let current_shape = [null]; // needed as a reference
-	let next_shape = Shape.generate_random_shape();
+	let next_shape = generate_next_shape();
 	let placed_tiles = Array.from({ length: canvas_size.y }, () =>
 		Array.from({ length: canvas_size.x }, () => null)
 	);
@@ -142,17 +143,27 @@ function play() {
 
 	const size_multiplier = window.devicePixelRatio;
 	canvas = document.getElementById('board');
-	ctx = setup_canvas(canvas, canvas_size.x * tile_size.x, canvas_size.y * tile_size.y, size_multiplier);
+	ctx = setup_canvas(
+		canvas,
+		canvas_size.x * tile_size.x,
+		canvas_size.y * tile_size.y,
+		size_multiplier
+	);
 	let canvas_next = document.getElementById('next');
-	canvas_next.style.display = "inline";
-	let ctx_next = setup_canvas(canvas_next, 4 * tile_size.x, 4 * tile_size.y, size_multiplier);
+	canvas_next.style.display = 'inline';
+	let ctx_next = setup_canvas(
+		canvas_next,
+		canvas_next_size.x * tile_size.x,
+		canvas_next_size.y * tile_size.y,
+		size_multiplier
+	);
 
 	freeze(); // freeze null piece to select and draw next
 
 	// register game for input
 	let game_id = next_game_id++;
 	games[game_id] = { ctx: ctx, shape: current_shape, placed: placed_tiles };
-	
+
 	function tick() {
 		current_shape[0].undraw(ctx, tile_size);
 		let can_move_down_start = current_shape[0].can_move_down(
@@ -178,7 +189,7 @@ function play() {
 				retry_button.onclick = play;
 				retry_button.removeAttribute('disabled');
 				retry_button.removeAttribute('style');
-				canvas_next.style.display = "none";
+				canvas_next.style.display = 'none';
 				return;
 			}
 			freeze();
@@ -231,11 +242,32 @@ function play() {
 		}
 		next_shape.undraw(ctx_next, tile_size);
 		current_shape[0] = next_shape;
-		let rots = Math.floor(Math.random() * 3);
-		for (let i = 0; i < rots; i++) { current_shape[0].rotate_clockwise(); }
-		current_shape[0].set_pos(new Vec2(Math.floor((canvas_size.x - current_shape[0].width()) / 2 + Math.random()), -1));
-		next_shape = Shape.generate_random_shape();
+		current_shape[0].set_pos(
+			new Vec2(
+				Math.floor(
+					(canvas_size.x - current_shape[0].width()) / 2 +
+						Math.random()
+				),
+				-1
+			)
+		);
+		next_shape = generate_next_shape();
 		next_shape.render(ctx_next, tile_size);
+	}
+
+	function generate_next_shape() {
+		let n_shape = Shape.generate_random_shape();
+		let rots = Math.floor(Math.random() * 4);
+		for (let i = 0; i < rots; i++) {
+			n_shape.rotate_clockwise();
+		}
+		n_shape.set_pos(
+			new Vec2(
+				(canvas_next_size.x - n_shape.width()) / 2.0,
+				(canvas_next_size.y + n_shape.height()) / 2.0 - 1.0
+			)
+		);
+		return n_shape;
 	}
 }
 
@@ -245,10 +277,9 @@ function try_movement_everywhere(movement) {
 	}
 }
 function try_movement(ctx, shape, placed, movement) {
-	if (shape["can_"+movement](placed, canvas_size)) {
+	if (shape['can_' + movement](placed, canvas_size)) {
 		shape.undraw(ctx, tile_size);
 		shape[movement]();
 		shape.render(ctx, tile_size);
 	}
 }
-
