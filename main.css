@@ -167,4 +167,14 @@ button:hover {
 		margin: 5px auto;
 	}
 }
+@media only screen and (max-width:480px) {
+	h1 {
+		font-size: 25px;
+	}
+}
+@media only screen and (max-width:390px) {
+	h1 {
+		font-size: 20px;
+	}
+}
 
