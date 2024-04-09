@@ -23,9 +23,9 @@ class Shape {
 
 	static generate_shape(shape) {
 		switch (shape) {
-			case 'L': {
+			case 'J': {
 				return new Shape(
-					'L',
+					'J',
 					[
 						new Tile(new Vec2(-1, -1), 0),
 						new Tile(new Vec2(-1, 0), 7),
@@ -49,9 +49,9 @@ class Shape {
 					new Vec2(1, 1)
 				);
 			}
-			case 'J': {
+			case 'L': {
 				return new Shape(
-					'J',
+					'L',
 					[
 						new Tile(new Vec2(-1, 0), 7),
 						new Tile(new Vec2(0, 0), 2),
@@ -98,7 +98,7 @@ class Shape {
 						new Tile(new Vec2(1, -1), 3),
 					],
 					new Vec2(0, 0),
-					new Vec2(1, 2)
+					new Vec2(1, 3)
 				);
 			}
 			case 'Z': {
@@ -111,7 +111,7 @@ class Shape {
 						new Tile(new Vec2(1, 0), 7),
 					],
 					new Vec2(0, 0),
-					new Vec2(1, 2)
+					new Vec2(1, 3)
 				);
 			}
 		}
@@ -256,10 +256,10 @@ class Shape {
 
 	/**
 	 *
-	 * @param {Vec2} canvas_size The dimensions of the canvas
 	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
+	 * @param {Vec2} canvas_size The dimensions of the canvas
 	 */
-	can_move_down(canvas_size, canvas_tiles) {
+	can_move_down(canvas_tiles, canvas_size) {
 		return !this.tiles.some((tile) => {
 			return (
 				tile.pos.y >= -1 && // The tile is no more than one block above the screen
@@ -285,13 +285,13 @@ class Shape {
 			);
 		});
 	}
-	can_rotate_clockwise(canvas_size, canvas_tiles) {
+	can_rotate_clockwise(canvas_tiles, canvas_size) {
 		this.rotate_clockwise();
 		let res = this.is_valid_position(canvas_size, canvas_tiles);
 		this.rotate_counterclockwise();
 		return res;
 	}
-	can_rotate_counterclockwise(canvas_size, canvas_tiles) {
+	can_rotate_counterclockwise(canvas_tiles, canvas_size) {
 		this.rotate_counterclockwise();
 		let res = this.is_valid_position(canvas_size, canvas_tiles);
 		this.rotate_clockwise();
@@ -314,10 +314,10 @@ class Shape {
 
 	/**
 	 *
-	 * @param {Vec2} canvas_size The dimensions of the canvas
 	 * @param {Array<Array<Tile>>} canvas_tiles The tiles placed on the canvas
+	 * @param {Vec2} canvas_size The dimensions of the canvas
 	 */
-	can_move_right(canvas_size, canvas_tiles) {
+	can_move_right(canvas_tiles, canvas_size) {
 		return !this.tiles.some((tile) => {
 			return (
 				tile.pos.x >= canvas_size.x - 1 || // There is a wall to the right of the current tile -> can not move there
@@ -339,3 +339,4 @@ class Shape {
 		this.rotation_centre.y += dy;
 	}
 }
+
