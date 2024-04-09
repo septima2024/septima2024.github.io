@@ -128,11 +128,15 @@ function play() {
 	let retry_button = document.getElementById('retry-button');
 	retry_button.setAttribute('disabled', '');
 	retry_button.setAttribute('style', 'display:none');
+	let score_text = document.getElementById('score');
+	let lines_text = document.getElementById('lines');
 	console.log('Play!');
 
 	let ms_to_move = 1000;
 	let score = 0;
 	let lines = 0;
+	score_text.innerText = score.toString();
+	lines_text.innerText = lines.toString();
 	let current_shape = [null]; // needed as a reference
 	let next_shape = generate_next_shape();
 	let placed_tiles = Array.from({ length: canvas_size.y }, () =>
@@ -237,8 +241,8 @@ function play() {
 			if (ms_to_move < 100) {
 				ms_to_move = 100;
 			}
-			document.getElementById('score').innerText = score.toString();
-			document.getElementById('lines').innerText = lines.toString();
+			score_text.innerText = score.toString();
+			lines_text.innerText = lines.toString();
 		}
 		next_shape.undraw(ctx_next, tile_size);
 		current_shape[0] = next_shape;
