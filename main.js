@@ -64,7 +64,9 @@ window.onload = async function () {
 	}
 
 	play_button.textContent = 'Hråt';
-	play_button.onclick = (() => { play_in(document.getElementsByClassName("game")[0]); });
+	play_button.onclick = () => {
+		play_in(document.getElementsByClassName('game')[0]);
+	};
 	play_button.removeAttribute('disabled');
 	loaded = images_loaded; // TODO: Make this work properly
 };
@@ -104,7 +106,12 @@ window.addEventListener(
 			E: 'rotate_clockwise',
 			Q: 'rotate_counterclockwise',
 			A: 'move_left',
-			D: 'move_right'
+			D: 'move_right',
+			s: 'move_down',
+			e: 'rotate_clockwise',
+			q: 'rotate_counterclockwise',
+			a: 'move_left',
+			d: 'move_right'
 		};
 		if (event.key in key_to_movement) {
 			try_movement_everywhere(key_to_movement[event.key]);
@@ -125,23 +132,32 @@ function play_in(game_sec) {
 
 function play_new(original) {
 	let gs = original.cloneNode(true);
-	document.getElementById("main").insertBefore(gs, document.getElementById("menu_sec"));
+	document
+		.getElementById('main')
+		.insertBefore(gs, document.getElementById('menu_sec'));
 	play_in(gs);
 }
 
-function play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next) {
+function play(
+	game_sec,
+	retry_button,
+	score_text,
+	lines_text,
+	canvas,
+	canvas_next
+) {
 	// TODO: Make this work properly
 	if (!loaded) {
 		return;
 	}
 	let menu_sec = document.getElementById('menu_sec');
-	if (!menu_sec.hasAttribute("style")) {
+	if (!menu_sec.hasAttribute('style')) {
 		menu_sec.setAttribute('style', 'display:none');
 		window.addEventListener('click', function (e) {
 			if (e.detail === 3) {
 				let tclicked = document.elementFromPoint(e.clientX, e.clientY);
-				if (tclicked.tagName.toLowerCase() === "h1") {
-					console.log("c:");
+				if (tclicked.tagName.toLowerCase() === 'h1') {
+					console.log('c:');
 					play_new(game_sec);
 				}
 			}
@@ -205,7 +221,16 @@ function play(game_sec, retry_button, score_text, lines_text, canvas, canvas_nex
 				delete games[game_id];
 				console.log('Game over!');
 				current_shape[0] = null;
-				retry_button.onclick = (() => { play(game_sec, retry_button, score_text, lines_text, canvas, canvas_next); });
+				retry_button.onclick = () => {
+					play(
+						game_sec,
+						retry_button,
+						score_text,
+						lines_text,
+						canvas,
+						canvas_next
+					);
+				};
 				retry_button.removeAttribute('disabled');
 				retry_button.removeAttribute('style');
 				canvas_next.style.display = 'none';
