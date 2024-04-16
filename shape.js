@@ -48,10 +48,10 @@ class Shape {
 				return new Shape(
 					'O',
 					[
-						new Tile(new Vec2(0, 1), 0),
-						new Tile(new Vec2(0, 0), 7),
-						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(1, 1), 3)
+						new Tile(new Vec2(0, 1), 23),
+						new Tile(new Vec2(0, 0), 24),
+						new Tile(new Vec2(1, 0), 26),
+						new Tile(new Vec2(1, 1), 25)
 					],
 					new Vec2(0.5, 0.5),
 					new Vec2(1, 1)
@@ -302,7 +302,8 @@ class Shape {
 				tile.pos.x >= 0 &&
 				tile.pos.x < canvas_size.x &&
 				tile.pos.y < canvas_size.y &&
-				(tile.pos.y < 0 || canvas_tiles[tile.pos.y][tile.pos.x] === null)
+				(tile.pos.y < 0 ||
+					canvas_tiles[tile.pos.y][tile.pos.x] === null)
 			);
 		});
 	}
