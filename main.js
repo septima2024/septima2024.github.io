@@ -4,17 +4,55 @@ const canvas_next_size = new Vec2(4, 4);
 
 const img_prefix = './images/';
 const img_sources = [
-	'c++',
-	'FACEBOOK',
-	'fb',
-	'ferris',
-	'ico',
-	'ig',
-	'INSTAGRAM',
-	'logo',
-	'MAIL',
-	'mail0',
-	'most_icon'
+	'C_00',
+	'C_01',
+	'C_02',
+	'C_10',
+	'C_12',
+	'I-small_00',
+	'I-small_01',
+	'I_00',
+	'I_01',
+	'I_02',
+	'I_03',
+	'J_00',
+	'J_01',
+	'J_02',
+	'J_12',
+	'L-small_01',
+	'L-small_10',
+	'L-small_11',
+	'L_02',
+	'L_10',
+	'L_11',
+	'L_12',
+	'O-small_00',
+	'O_00',
+	'O_01',
+	'O_10',
+	'O_11',
+	'P_00',
+	'P_01',
+	'P_10',
+	'P_11',
+	'P_12',
+	'Q_00',
+	'Q_01',
+	'Q_02',
+	'Q_10',
+	'Q_11',
+	'S_01',
+	'S_02',
+	'S_10',
+	'S_11',
+	'T_00',
+	'T_10',
+	'T_11',
+	'T_20',
+	'Z_00',
+	'Z_01',
+	'Z_11',
+	'Z_12'
 ];
 
 const images = [];
@@ -30,7 +68,7 @@ let image_promises = img_sources.map(function (img_src, index) {
 			img.onerror = function () {
 				reject(new Error('Could not load image at ' + img_src));
 			};
-			img.src = img_prefix + img_src + i + '.png';
+			img.src = img_prefix + img_src + '_' + i + '.png';
 			images[index * 4 + i] = img;
 		}
 	});
@@ -174,7 +212,10 @@ function play(
 			}
 			touches++;
 			if (touches == 3) {
-				let tclicked = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+				let tclicked = document.elementFromPoint(
+					e.touches[0].clientX,
+					e.touches[0].clientY
+				);
 				if (tclicked.tagName.toLowerCase() === 'h1') {
 					console.log('c:');
 					play_new(game_sec);

@@ -5,7 +5,13 @@ const SHAPES = Object.freeze({
 	T: 'T',
 	I: 'I',
 	S: 'S',
-	Z: 'Z'
+	Z: 'Z',
+	C: 'C',
+	i: 'i',
+	l: 'l',
+	o: 'o',
+	P: 'P',
+	Q: 'Q'
 });
 
 class Shape {
@@ -35,10 +41,10 @@ class Shape {
 				return new Shape(
 					'J',
 					[
-						new Tile(new Vec2(-1, -1), 0),
-						new Tile(new Vec2(-1, 0), 7),
-						new Tile(new Vec2(0, 0), 2),
-						new Tile(new Vec2(1, 0), 3)
+						new Tile(new Vec2(1, -1), 14),
+						new Tile(new Vec2(0, -1), 13),
+						new Tile(new Vec2(0, 0), 12),
+						new Tile(new Vec2(0, 1), 11)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -48,10 +54,10 @@ class Shape {
 				return new Shape(
 					'O',
 					[
-						new Tile(new Vec2(0, 1), 0),
-						new Tile(new Vec2(0, 0), 7),
-						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(1, 1), 3)
+						new Tile(new Vec2(0, 1), 23),
+						new Tile(new Vec2(0, 0), 24),
+						new Tile(new Vec2(1, 0), 26),
+						new Tile(new Vec2(1, 1), 25)
 					],
 					new Vec2(0.5, 0.5),
 					new Vec2(1, 1)
@@ -61,10 +67,10 @@ class Shape {
 				return new Shape(
 					'L',
 					[
-						new Tile(new Vec2(-1, 0), 7),
-						new Tile(new Vec2(0, 0), 2),
-						new Tile(new Vec2(1, 0), 3),
-						new Tile(new Vec2(1, -1), 0)
+						new Tile(new Vec2(-1, -1), 18),
+						new Tile(new Vec2(0, -1), 21),
+						new Tile(new Vec2(0, 0), 20),
+						new Tile(new Vec2(0, 1), 19)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -74,10 +80,10 @@ class Shape {
 				return new Shape(
 					'T',
 					[
-						new Tile(new Vec2(0, 0), 0),
-						new Tile(new Vec2(1, 0), 7),
-						new Tile(new Vec2(-1, 0), 2),
-						new Tile(new Vec2(0, 1), 3)
+						new Tile(new Vec2(0, 0), 42),
+						new Tile(new Vec2(1, 0), 44),
+						new Tile(new Vec2(-1, 0), 41),
+						new Tile(new Vec2(0, -1), 43)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 2)
@@ -87,10 +93,10 @@ class Shape {
 				return new Shape(
 					'I',
 					[
-						new Tile(new Vec2(-1, 0), 0),
-						new Tile(new Vec2(0, 0), 7),
-						new Tile(new Vec2(1, 0), 2),
-						new Tile(new Vec2(2, 0), 3)
+						new Tile(new Vec2(0, -1), 10),
+						new Tile(new Vec2(0, 0), 9),
+						new Tile(new Vec2(0, 1), 8),
+						new Tile(new Vec2(0, 2), 7)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -100,10 +106,10 @@ class Shape {
 				return new Shape(
 					'S',
 					[
-						new Tile(new Vec2(-1, 0), 0),
-						new Tile(new Vec2(0, 0), 7),
-						new Tile(new Vec2(0, -1), 2),
-						new Tile(new Vec2(1, -1), 3)
+						new Tile(new Vec2(-1, 0), 37),
+						new Tile(new Vec2(0, 0), 40),
+						new Tile(new Vec2(-1, -1), 38),
+						new Tile(new Vec2(0, 1), 39)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -113,10 +119,85 @@ class Shape {
 				return new Shape(
 					'Z',
 					[
-						new Tile(new Vec2(-1, -1), 3),
+						new Tile(new Vec2(1, -1), 48),
+						new Tile(new Vec2(1, 0), 47),
+						new Tile(new Vec2(0, 0), 46),
+						new Tile(new Vec2(0, 1), 45)
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'C': {
+				return new Shape(
+					'C',
+					[
+						new Tile(new Vec2(0, 1), 0),
+						new Tile(new Vec2(0, 0), 1),
 						new Tile(new Vec2(0, -1), 2),
-						new Tile(new Vec2(0, 0), 0),
-						new Tile(new Vec2(1, 0), 7)
+						new Tile(new Vec2(1, 1), 3),
+						new Tile(new Vec2(1, -1), 4)
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'i': {
+				return new Shape(
+					'i',
+					[
+						new Tile(new Vec2(0, 1), 5),
+						new Tile(new Vec2(0, 0), 6)
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'l': {
+				return new Shape(
+					'l',
+					[
+						new Tile(new Vec2(0, 0), 15),
+						new Tile(new Vec2(1, 1), 16),
+						new Tile(new Vec2(1, 0), 17),
+					],
+					new Vec2(0.5, 0.5),
+					new Vec2(1, 3)
+				);
+			}
+			case 'o': {
+				return new Shape(
+					'o',
+					[
+						new Tile(new Vec2(0, 0), 22),
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'P': {
+				return new Shape(
+					'P',
+					[
+						new Tile(new Vec2(-1, 1), 27),
+						new Tile(new Vec2(-1, 0), 28),
+						new Tile(new Vec2(0, 1), 29),
+						new Tile(new Vec2(0, 0), 30),
+						new Tile(new Vec2(0, -1), 31)
+					],
+					new Vec2(0, 0),
+					new Vec2(1, 3)
+				);
+			}
+			case 'Q': {
+				return new Shape(
+					'Q',
+					[
+						new Tile(new Vec2(0, 1), 32),
+						new Tile(new Vec2(0, 0), 33),
+						new Tile(new Vec2(0, -1), 34),
+						new Tile(new Vec2(1, 1), 35),
+						new Tile(new Vec2(1, 0), 36)
 					],
 					new Vec2(0, 0),
 					new Vec2(1, 3)
@@ -302,7 +383,8 @@ class Shape {
 				tile.pos.x >= 0 &&
 				tile.pos.x < canvas_size.x &&
 				tile.pos.y < canvas_size.y &&
-				(tile.pos.y < 0 || canvas_tiles[tile.pos.y][tile.pos.x] === null)
+				(tile.pos.y < 0 ||
+					canvas_tiles[tile.pos.y][tile.pos.x] === null)
 			);
 		});
 	}
