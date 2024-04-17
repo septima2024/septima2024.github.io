@@ -9,6 +9,7 @@
 		<script src="vec2.js"></script>
 		<script src="tile.js"></script>
 		<script src="shape.js"></script>
+		<script src="online.js"></script>
 		<script src="main.js"></script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,46 +39,76 @@
 					<div class="controls">
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('rotate_counterclockwise')"
+							onclick="mv_input('rotate_counterclockwise')"
 						>
 							<i class="fa-solid fa-rotate-left"></i>
 						</button>
 						<span style="display: hidden"></span>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('rotate_clockwise')"
+							onclick="mv_input('rotate_clockwise')"
 						>
 							<i class="fa-solid fa-rotate-right"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_left')"
+							onclick="mv_input('move_left')"
 						>
 							<i class="fa-solid fa-arrow-left"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_down')"
+							onclick="mv_input('move_down')"
 						>
 							<i class="fa-solid fa-arrow-down"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_right')"
+							onclick="mv_input('move_right')"
 						>
 							<i class="fa-solid fa-arrow-right"></i>
 						</button>
 					</div>
 				</div>
 			</section>
+			<section id="leaderboard" style="display:none">
+				<h3>Nejlepší hry (1x)</h3>
+				<ol id="leaderboard-list">
+					<li class="leaderboard-item">
+						<span class="name">načítání</span>
+						<span class="score">0</span>
+						<a class="replay">záznam</a>
+					</li>
+				</ol>
+			</section>
 			<section id="menu_sec">
 				<div id="menu" class="menu">
-					<button class="play-button" id="play-button" disabled>
-						Načítání
-					</button>
+					<div class="menu_inner">
+						<button class="play-button" id="play-offline-button" disabled>
+							Načítání
+						</button>
+						<input type="text" class="name" id="name" placeholder="jméno" />
+						<button class="play-button" id="play-online-button" disabled>
+							Načítání
+						</button>
+						<p id="menu-note" class="note">*před hraním online si přečtěte instrukce</p>
+					</div>
 				</div>
 			</section>
 			<section id="notes_sec" class="credits-and-instructions-wrap">
+				<h3>Hra online</h3>
+				<p class="credits-and-instructions">
+					Je možné hrát online - soutěžit s ostatními. Hodí se k tomu mít funkční připojení k internetu
+					(které ve škole není všude/vždy). Pokud chete mít možnost získání odměny, zvolte si své jméno
+					tak, aby bylo prokazatelně vaše, třeba vaší školní e-mail adresu bez domény (např. xmajfi01
+					nebo xkudma01). Vaše vstupy během hry se budou při online hře nahrávat, proto bude možné si
+					později vaši hru přehrát.
+				</p>
+				<label class="checkbox">
+					<input type="checkbox" id="read-instructions" />
+					<span class="checkmark"></span>
+					přečetl jsem si instrukce pro hru online
+				</label>
 				<h3>Ovládání</h3>
 				<p class="credits-and-instructions">
 					Hru lze ovládat pomocí klávesnice (šipky či ASD + QE na
