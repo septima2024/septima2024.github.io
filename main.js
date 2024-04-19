@@ -93,7 +93,6 @@ window.onload = async function () {
 	// Wait to load all images
 	try {
 		await Promise.all(image_promises);
-		console.log(images);
 		images_loaded = true;
 	} catch (error) {
 		// One or more images failed to load
@@ -123,7 +122,6 @@ window.onload = async function () {
 			return;
 		}
 		document.getElementById("leaderboard").removeAttribute("style");
-		init_leaderboard();
 		set_online(() => {
 			setup(1); // TODO: multi play?
 			start_loop();
@@ -433,6 +431,12 @@ function setup(game_count) {
 	notes_sec.setAttribute('style',
 		'width:' + w + 'px;' + 'height:' + h + 'px'
 	);
+	let lb_sec = document.getElementById('leaderboard');
+	if (!lb_sec.hasAttribute("style")) {
+		lb_sec.setAttribute('style',
+			'width:' + w + 'px;' + 'height:' + h + 'px'
+		);
+	}
 }
 function is_ready() {
 	for (let game of games) {

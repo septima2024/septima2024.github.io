@@ -154,6 +154,19 @@ button:hover {
 	font-size: 12px;
 }
 
+.lb_sec {
+	display: block;
+}
+.lb_list li {
+	display: flex;
+	justify-content: space-between;
+}
+.lb_name, .lb_score, .lb_replay {
+	color: var(--secondary);
+	font-size: 16px;
+	width: 100px;
+}
+
 .checkbox {
 	position: relative;
 	display: block;

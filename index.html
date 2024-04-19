@@ -71,14 +71,13 @@
 					</div>
 				</div>
 			</section>
-			<section id="leaderboard" style="display:none">
-				<h3>Nejlepší hry (1x)</h3>
-				<ol id="leaderboard-list">
-					<li class="leaderboard-item">
-						<span class="name">načítání</span>
-						<span class="score">0</span>
-						<a class="replay">záznam</a>
-					</li>
+			<section id="leaderboard" class="lb_sec" style="display:none">
+				<h3>
+					<button onclick="nav_lb_ngames(-1)">&lt;</button>
+					Nejlepší hry (<span id="lb-gc">1</span>x)
+					<button onclick="nav_lb_ngames(1)">&gt;</button>
+				</h3>
+				<ol id="leaderboard-list" class="lb_list">
 				</ol>
 			</section>
 			<section id="menu_sec">
