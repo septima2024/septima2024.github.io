@@ -96,9 +96,12 @@ function record_fall(id) {
 	recordings[id].record(recording_events.FALL);
 }
 function record_late(id) {
+	if (recordings.length <= id) { // partial ill-fix because it fixes the cause instead of the actual problem, but no one cares as long as it "works"...
+		console.log("tried to record-late with no active recordings");
+		return;
+	}
 	recordings[id].record(recording_events.LATE);
 }
-
 
 let repl = null;
 let repl_fi = null;
@@ -115,6 +118,7 @@ class Replay {
 		this.at = [];
 		this.att = [];
 		this.timeout = null;
+		this.disabled = true;
 	}
 	add(rand, record) {
 		this.rand_inits.push(BigInt(rand));
@@ -154,6 +158,7 @@ class Replay {
 			game.draw_next_shape();
 		});
 		on_lose = repl_ool;
+		this.disabled = false;
 		setup(this.records.length);
 	}
 	next_ev() {
@@ -200,6 +205,8 @@ class Replay {
 		return ne.mt / 4.096;
 	}
 	tick_loop() {
+		if (this.disabled)
+			return;
 		let i = this.tick();
 		if (i === null) {
 			this.end();
@@ -226,6 +233,7 @@ class Replay {
 	}
 	end() {
 		console.log("replay end");
+		this.disabled = true;
 		if (this.timeout !== null) {
 			clearTimeout(this.timeout);
 		}
@@ -244,18 +252,12 @@ let socket = null;
 function set_online(after) {
 	let old_setup = setup; setup = ((n) => {
 		recordings = [];
-		socket.send("b"+n);
-		old_setup(n);
-	});
-	let old_start = start; start = (() => {
-		if (!is_ready())
-			return true;
-		console.log("start - online");
-		for (let i = 0; i < games.length; i++) {
+		console.log("setup - online");
+		for (let i = 0; i < n; i++) {
 			recordings.push(new Recording(i));
 		}
-		old_start(); // is_ready double check :/
-		return false;
+		socket.send("b"+n);
+		old_setup(n);
 	});
 	let old_on_lose = on_lose; on_lose = (() => {
 		socket.send("l");
@@ -347,6 +349,9 @@ function set_online(after) {
 				for (let i = 0; i < replay_ngames; i++) {
 					lens.push(dv.getUint32(off, true));
 					off += 4;
+				}
+				if (repl !== null) {
+					repl.end();
 				}
 				repl = new Replay();
 				for (let i = 0; i < replay_ngames; i++) {

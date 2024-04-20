@@ -78,6 +78,10 @@ let loaded = false;
 let game_sections = [];
 let games = [];
 
+function get_ngames() {
+	return Number(document.getElementById("ngames_sel").value);
+}
+
 window.onload = async function () {
 	let play_off_button = document.getElementById('play-offline-button');
 	let play_on_button = document.getElementById('play-online-button');
@@ -105,7 +109,7 @@ window.onload = async function () {
 		if (!loaded) {
 			return;
 		}
-		setup(1); // TODO: multi play?
+		setup(get_ngames());
 		start_loop();
 	};
 	play_on_button.onclick = () => {
@@ -123,7 +127,7 @@ window.onload = async function () {
 		}
 		document.getElementById("leaderboard").removeAttribute("style");
 		set_online(() => {
-			setup(1); // TODO: multi play?
+			setup(get_ngames());
 			start_loop();
 		});
 	};
@@ -181,7 +185,8 @@ window.addEventListener(
 
 function clone_game_sec(original) {
 	let gs = original.cloneNode(true);
-	document.getElementById('main').insertBefore(gs, document.getElementById('menu_sec'));
+	game_sections.push(gs);
+	document.getElementById('main').insertBefore(gs, document.getElementById('leaderboard'));
 }
 
 const size_multiplier = window.devicePixelRatio;
@@ -267,6 +272,7 @@ class Game {
 			canvas_next_size.y * tile_size.y, size_multiplier);
 		this.ready = false;
 		this.timeoutid = null;
+		this.disabled = false;
 		this.freeze_check();
 	}
 	fall() {
@@ -299,12 +305,15 @@ class Game {
 		this.current_shape.render(this.ctx, tile_size);
 	}
 	fall_loop() {
+		if (this.disabled)
+			return;
 		fall_in(this);
 		if (this.timeoutid == null) {
 			this.timeoutid = setTimeout(() => { this.fall_loop(); }, this.ms_to_move);
 		}
 	}
 	lose() {
+		this.disabled = true;
 		this.ready = false;
 		let game_count = games.length;
 		this.current_shape = null;
