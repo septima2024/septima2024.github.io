@@ -175,7 +175,7 @@ window.addEventListener(
 			a: 'move_left',
 			d: 'move_right'
 		};
-		if (event.key in key_to_movement) {
+		if (event.key in key_to_movement && document.getElementById('menu_sec').hasAttribute("style")) {
 			mv_input(key_to_movement[event.key]);
 			event.preventDefault();
 		}

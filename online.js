@@ -1,4 +1,4 @@
-const ws_addr = "ws://localhost:4777";
+const ws_addr = "wss://maj-tetris-server.jumpingcrab.com";
 const recording_events = Object.freeze({
 	DOWN: 0,
 	LEFT: 1,
