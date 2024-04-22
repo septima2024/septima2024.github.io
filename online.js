@@ -10,7 +10,7 @@ const recording_events = Object.freeze({
 });
 
 let lb_ngames = 0;
-function nav_lb_ngames() { }
+function lb_refresh() { }
 
 function leaderboard(scores, ngames) {
 	let list = document.getElementById("leaderboard-list");
@@ -109,6 +109,8 @@ let repl_im = null;
 let repl_gns = null;
 let repl_ol = null;
 let repl_ool = null;
+let repl_os = null;
+let repl_oos = null;
 class Replay {
 	constructor() {
 		this.rand_inits = [];
@@ -129,6 +131,7 @@ class Replay {
 		return Number(this.rands[i] >> BigInt(16));
 	}
 	init() {
+		on_lose();
 		console.log("replay start");
 		this.rands = [];
 		this.at = [];
@@ -158,6 +161,7 @@ class Replay {
 			game.draw_next_shape();
 		});
 		on_lose = repl_ool;
+		setup = repl_oos;
 		this.disabled = false;
 		setup(this.records.length);
 	}
@@ -237,11 +241,13 @@ class Replay {
 		if (this.timeout !== null) {
 			clearTimeout(this.timeout);
 		}
+		on_lose();
 		this.timeout = null;
 		fall_in = repl_fi;
 		input_work = repl_im;
 		generate_next_shape = repl_gns;
 		on_lose = repl_ol;
+		setup = repl_os;
 	}
 }
 function req_replay(id, ngames) {
@@ -251,6 +257,7 @@ function req_replay(id, ngames) {
 let socket = null;
 function set_online(after) {
 	let old_setup = setup; setup = ((n) => {
+		lb_ngames = n;
 		recordings = [];
 		console.log("setup - online");
 		for (let i = 0; i < n; i++) {
@@ -259,6 +266,8 @@ function set_online(after) {
 		socket.send("b"+n);
 		old_setup(n);
 	});
+	repl_os = setup;
+	repl_oos = old_setup;
 	let old_on_lose = on_lose; on_lose = (() => {
 		socket.send("l");
 		for (let recording of recordings) {
@@ -293,17 +302,14 @@ function set_online(after) {
 		old_input_work(movement);
 	});
 	repl_im = input_work;
-	nav_lb_ngames = ((d) => {
-		lb_ngames += d;
-		if (lb_ngames < 0) lb_ngames = 0;
-		if (lb_ngames > 3) lb_ngames = 3;
-		socket.send("L"+lb_ngames);
-		document.getElementById("lb-gc").textContent = (1+lb_ngames).toString();
+	lb_refresh = (() => {
+		socket.send("L"+(lb_ngames-1));
+		document.getElementById("lb-gc").textContent = (lb_ngames).toString();
 	})
 	socket = new WebSocket(ws_addr);
 	socket.addEventListener("open", (event) => {
 		after();
-		socket.send("L"+lb_ngames);
+		lb_refresh();
 	});
 	socket.addEventListener("close", (event) => {
 		console.log("connection closed", event.code, event.reason, event.wasClean);

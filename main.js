@@ -226,7 +226,8 @@ function input_work(movement) {
 }
 function on_lose() {
 	for (let game of games) {
-		game.lose();
+		if (!game.disabled)
+			game.lose();
 	}
 }
 

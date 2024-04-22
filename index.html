@@ -73,9 +73,10 @@
 			</section>
 			<section id="leaderboard" class="lb_sec" style="display:none">
 				<h3>
-					<button onclick="nav_lb_ngames(-1)">&lt;</button>
 					Nejlepší hry (<span id="lb-gc">1</span>x)
-					<button onclick="nav_lb_ngames(1)">&gt;</button>
+					<button onclick="lb_refresh()">
+						<i class="fa-solid fa-rotatrotate-right"></i>
+					</button>
 				</h3>
 				<ol id="leaderboard-list" class="lb_list">
 				</ol>
@@ -92,7 +93,7 @@
 						</button>
 						<p id="menu-note" class="note">*před hraním online si přečtěte instrukce</p>
 						<select name="ngames_sel" id="ngames_sel">
-							<option value="1">normal (1)</option>
+							<option value="1">normální (1)</option>
 							<option value="2">2</option>
 							<option value="3">3</option>
 							<option value="4">4</option>
