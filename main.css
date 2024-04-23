@@ -155,6 +155,12 @@ button:hover {
 	font-style: italic;
 	font-size: 12px;
 }
+#connection-fail {
+	padding: 10px;
+	color: var(--secondary1);
+	font-style: italic bold;
+	font-size: 18px;
+}
 
 .lb_sec {
 	display: block;

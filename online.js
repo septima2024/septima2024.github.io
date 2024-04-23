@@ -279,7 +279,7 @@ function set_online(after) {
 	});
 	repl_ol = on_lose;
 	repl_ool = old_on_lose;
-	generate_next_shape = ((game) => {
+	let ogns = generate_next_shape; generate_next_shape = ((game) => {
 		if (recordings.length === 0) {
 			socket.send(Uint8Array.from([0]));
 		} else {
@@ -315,7 +315,18 @@ function set_online(after) {
 		console.log("connection closed", event.code, event.reason, event.wasClean);
 	});
 	socket.addEventListener("error", (event) => {
-		console.log("connection closed due to an error", event);
+		console.log("websocket error occured", event);
+		document.getElementById("leaderboard").setAttribute("style", "display:none");
+		document.getElementById("connection-fail").removeAttribute("style");
+		document.getElementById("name").setAttribute("style", "display:none");
+		document.getElementById("play-online-button").setAttribute("style", "display:none");
+		document.getElementById("menu-note").setAttribute("style", "display:none");
+		setup = old_setup;
+		on_lose = old_on_lose;
+		generate_next_shape = ogns;
+		fall_in = old_fall_in;
+		input_work = old_input_work;
+		lb_refresh = null;
 	});
 	socket.addEventListener("message", async (event) => {
 		if (typeof event.data == "string" && event.data.length == 3) {
