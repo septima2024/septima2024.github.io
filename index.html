@@ -9,6 +9,7 @@
 		<script src="vec2.js"></script>
 		<script src="tile.js"></script>
 		<script src="shape.js"></script>
+		<script src="online.js"></script>
 		<script src="main.js"></script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,6 +27,7 @@
 			<h1><b>MÄJÅLES SËPTIMÅ - TETRIS</b></h1>
 		</header>
 		<main id="main">
+			<p id="connection-fail" class="connection-info" style="display:none">Nepovedlo se připojit k serveru, hrát můžete jen offline.</p>
 			<section class="game" style="display: none">
 				<canvas class="game-board"></canvas>
 				<div class="info">
@@ -38,46 +40,81 @@
 					<div class="controls">
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('rotate_counterclockwise')"
+							onclick="mv_input('rotate_counterclockwise')"
 						>
 							<i class="fa-solid fa-rotate-left"></i>
 						</button>
 						<span style="display: hidden"></span>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('rotate_clockwise')"
+							onclick="mv_input('rotate_clockwise')"
 						>
 							<i class="fa-solid fa-rotate-right"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_left')"
+							onclick="mv_input('move_left')"
 						>
 							<i class="fa-solid fa-arrow-left"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_down')"
+							onclick="mv_input('move_down')"
 						>
 							<i class="fa-solid fa-arrow-down"></i>
 						</button>
 						<button
 							class="control-button"
-							onclick="try_movement_everywhere('move_right')"
+							onclick="mv_input('move_right')"
 						>
 							<i class="fa-solid fa-arrow-right"></i>
 						</button>
 					</div>
 				</div>
 			</section>
+			<section id="leaderboard" class="lb_sec" style="display:none">
+				<h3>
+					Nejlepší hry (<span id="lb-gc">1</span>x)
+					<button onclick="lb_refresh()">načíst znovu</button>
+				</h3>
+				<ol id="leaderboard-list" class="lb_list">
+				</ol>
+			</section>
 			<section id="menu_sec">
 				<div id="menu" class="menu">
-					<button class="play-button" id="play-button" disabled>
-						Načítání
-					</button>
+					<div class="menu_inner">
+						<button class="play-button" id="play-offline-button" disabled>
+							Načítání
+						</button>
+						<input type="text" class="name" id="name" placeholder="jméno" />
+						<button class="play-button" id="play-online-button" disabled>
+							Načítání
+						</button>
+						<p id="menu-note" class="note">*před hraním online si přečtěte instrukce</p>
+						<p id="connection-note" class="note">zkouší se připojení k serveru</p>
+						<select name="ngames_sel" id="ngames_sel">
+							<option value="1">normální (1)</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+					</div>
 				</div>
 			</section>
 			<section id="notes_sec" class="credits-and-instructions-wrap">
+				<h3>Hra online</h3>
+				<p class="credits-and-instructions">
+					Je možné hrát online - soutěžit s ostatními. Hodí se k tomu mít funkční připojení k internetu
+					(které ve škole není všude/vždy). Pokud chete mít možnost získání odměny, zvolte si své jméno
+					tak, aby bylo prokazatelně vaše, třeba vaší školní e-mail adresu bez domény (např. xmajfi01
+					nebo xkudma01). Vaše vstupy během hry se budou při online hře nahrávat, proto bude možné si
+					později vaši hru přehrát.
+				</p>
+				<label class="checkbox">
+					<input type="checkbox" id="read-instructions" />
+					<span class="checkmark"></span>
+					přečetl jsem si instrukce pro hru online
+				</label>
 				<h3>Ovládání</h3>
 				<p class="credits-and-instructions">
 					Hru lze ovládat pomocí klávesnice (šipky či ASD + QE na
