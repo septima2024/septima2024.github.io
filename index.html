@@ -26,8 +26,8 @@
 		<header>
 			<h1><b>MÄJÅLES SËPTIMÅ - TETRIS</b></h1>
 		</header>
-		<p id="connection-fail" style="display:none">Nepovedlo se připojit k serveru, hrát můžete jen offline.</p>
 		<main id="main">
+			<p id="connection-fail" class="connection-info" style="display:none">Nepovedlo se připojit k serveru, hrát můžete jen offline.</p>
 			<section class="game" style="display: none">
 				<canvas class="game-board"></canvas>
 				<div class="info">
@@ -91,6 +91,7 @@
 							Načítání
 						</button>
 						<p id="menu-note" class="note">*před hraním online si přečtěte instrukce</p>
+						<p id="connection-note" class="note">zkouší se připojení k serveru</p>
 						<select name="ngames_sel" id="ngames_sel">
 							<option value="1">normální (1)</option>
 							<option value="2">2</option>

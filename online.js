@@ -255,6 +255,27 @@ function req_replay(id, ngames) {
 }
 
 let socket = null;
+function try_connect() {
+	let socket2 = new WebSocket(ws_addr);
+	socket2.addEventListener("open", (event) => {
+		document.getElementById("connection-note").textContent = "zkouší se připojení k serveru...";
+		socket2.send("Test");
+		console.log("sent test message");
+	});
+	socket2.addEventListener("close", (event) => {
+		console.log("test connection closed", event.code, event.reason, event.wasClean);
+	});
+	socket2.addEventListener("error", (event) => {
+		document.getElementById("connection-note").textContent = "zkouškové připojení se nezdařilo";
+	});
+	socket2.addEventListener("message", async (event) => {
+		console.log("test socket message: ", event.data);
+		if (event.data === "alive") {
+			document.getElementById("connection-note").textContent = "zkouškové připojení proběhlo úspěšně";
+			socket2.close();
+		}
+	});
+}
 function set_online(after) {
 	let old_setup = setup; setup = ((n) => {
 		lb_ngames = n;

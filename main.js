@@ -102,6 +102,7 @@ window.onload = async function () {
 		// One or more images failed to load
 		console.error(error);
 	}
+	try_connect();
 
 	play_off_button.textContent = 'Hråt offline';
 	play_on_button.textContent = 'Hråt online';
